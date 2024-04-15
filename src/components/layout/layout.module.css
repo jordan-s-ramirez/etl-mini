@@ -1,0 +1,43 @@
+.customLayoutSidebar {
+    position: -webkit-sticky;
+    position: sticky;
+    top: 0;
+    float: left;
+}
+
+/* MAIN LAYOUT CSS */
+.customLayoutApp {
+    /* color: var(--content-color); */
+    /* text-align: center; */
+    display: flex;
+    flex-direction: column;
+    min-height: 100vh;
+}
+
+.customLayoutHeader,
+.customLayoutFooter {
+    /* background: var(--header-bgc); */
+    /* color: var(--header-tc); */
+    height: 50px;
+    padding-left: 1vw;
+    padding-right: 1vw;
+}
+
+.customLayoutContainer {
+    display: flex;
+    flex: 1;
+}
+
+.customLayoutDrawerOpen {
+    width: 20%;
+}
+
+.customLayoutDrawerClosed {
+    width: 0px;
+    transition: width 0.7s;
+}
+
+.customLayoutMain {
+    flex: 1;
+    background: var(--main-bgc);
+}

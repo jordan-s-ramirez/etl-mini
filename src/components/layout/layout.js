@@ -2,18 +2,19 @@ import React from "react";
 import Navbar from "./sub-components/navbar";
 import { ThemeProvider } from "@mui/material/styles";
 import { theme } from "@/styles/mui_theme";
+import layoutStyle from "./layout.module.css";
 
 export default function Layout({ children }) {
   const [drawerOpen, setDrawerOpen] = React.useState(true);
   return (
     <>
       <ThemeProvider theme={theme}>
-        <div className="custom-layout-app">
-          {/* <div className="custom-layout-header"> </div> */}
-          <div className="custom-layout-container">
+        <div className={layoutStyle.customLayoutApp}>
+          {/* <div className={layoutStyle.customLayoutHeader}> </div> */}
+          <div className={layoutStyle.customLayoutContainer}>
             <aside>
               <div
-                className="custom-layout-sidebar"
+                className={layoutStyle.customLayoutSidebar}
                 onMouseEnter={() => {
                   setDrawerOpen((e) => !e);
                 }}
@@ -24,9 +25,9 @@ export default function Layout({ children }) {
                 <Navbar drawerOpen={drawerOpen} theme={theme} />
               </div>
             </aside>
-            <main className="custom-layout-main">{children}</main>
+            <main className={layoutStyle.customLayoutMain}>{children}</main>
           </div>
-          {/* <div className="custom-layout-footer"></div> */}
+          {/* <div className={layoutStyle.customLayoutFooter}></div> */}
         </div>
       </ThemeProvider>
     </>
