@@ -1,8 +1,12 @@
 import Layout from "@/components/layout/layout";
+import React from "react";
+import SqlEditor from "@/components/sql-editor/sql-editor";
+
 const Page = () => {
   return (
     <>
-      <p>hello</p>
+      <h3 style={{ textAlign: "center" }}>SQL Editor</h3>
+      <SqlEditor />
     </>
   );
 };

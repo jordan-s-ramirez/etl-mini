@@ -1,53 +1,15 @@
-import { AiFillPieChart } from "react-icons/ai";
-import { GiChart } from "react-icons/gi";
-import { GrDocumentText } from "react-icons/gr";
-import { AiOutlineCalendar } from "react-icons/ai";
-import { AiOutlinePieChart } from "react-icons/ai";
 import { IoMdHelpCircleOutline } from "react-icons/io";
 import { PiFlowArrowBold } from "react-icons/pi";
+import { FaCode } from "react-icons/fa";
+import { FaGithub } from "react-icons/fa";
 export var navbarConfig = {
   config: [
     {
-      type: "SubMenu",
-      title: "Charts",
-      icon: <AiOutlinePieChart />,
-      data: [
-        {
-          type: "MenuItem",
-          description: "Internal Report Coming Soon?",
-          url: "/pie-chart",
-          title: "Pie Chart",
-          icon: <AiFillPieChart />,
-        },
-        {
-          type: "MenuItem",
-          description: "Internal Report Coming Soon?",
-          url: "/line-chart",
-          title: "Line Chart",
-          icon: <GiChart />,
-        },
-      ],
-    },
-    {
       type: "MenuItem",
-      description: "Generic Documentation",
-      url: "/documentation",
+      description: "Github Documentation",
+      url: "https://github.com/jordan-s-ramirez/etl-mini",
       title: "Documentation",
-      icon: <GrDocumentText />,
-    },
-    {
-      type: "MenuItem",
-      description: "Generic Calendar",
-      url: "/calendar",
-      title: "Calendar",
-      icon: <AiOutlineCalendar />,
-    },
-    {
-      type: "MenuItem",
-      description: "Generic Help Page",
-      url: "/help",
-      title: "Help",
-      icon: <IoMdHelpCircleOutline />,
+      icon: <FaGithub />,
     },
     {
       type: "MenuItem",
@@ -55,6 +17,20 @@ export var navbarConfig = {
       url: "/workflow",
       title: "Workflow",
       icon: <PiFlowArrowBold />,
+    },
+    {
+      type: "MenuItem",
+      description: "Perform small scale ETL in the browser",
+      url: "/sql-editor",
+      title: "Sql Editor",
+      icon: <FaCode />,
+    },
+    {
+      type: "MenuItem",
+      description: "Generic Help Page",
+      url: "/help",
+      title: "Help",
+      icon: <IoMdHelpCircleOutline />,
     },
   ],
 };
