@@ -35,13 +35,19 @@ function InputFileUpload() {
 export default function FileForm() {
   return (
     <>
-      <Card sx={{ height: "100%", backgroundColor: "transparent" }}>
-        <Stack direction={"column"} spacing={3} sx={{ padding: "5%" }}>
-          <Input fullWidth placeholder="Table Name" required />
-          <InputFileUpload />
-          <Button type="submit">Load Data</Button>
-        </Stack>
-      </Card>
+      <Stack
+        justifyContent="space-evenly"
+        alignItems="stretch"
+        direction="column"
+        sx={{ height: "100%", p: 1, minHeight: 200 }}
+      >
+        <h3 style={{ margin: 0 }}>File Upload</h3>
+        <Input fullWidth placeholder="Table Name" required />
+        <InputFileUpload />
+        <Button type="submit" fullWidth>
+          Load Data
+        </Button>
+      </Stack>
     </>
   );
 }

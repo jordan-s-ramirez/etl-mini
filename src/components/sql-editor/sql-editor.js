@@ -1,4 +1,13 @@
-import { Grid, TextField, Alert, AlertTitle } from "@mui/material";
+import {
+  Grid,
+  TextField,
+  Alert,
+  AlertTitle,
+  Card,
+  Stack,
+  Checkbox,
+  Button,
+} from "@mui/material";
 import React from "react";
 import initSqlJs from "sql.js";
 import CustomDataGrid from "./sub-components/data-grid";
@@ -8,6 +17,8 @@ export default function SqlJsPage() {
   const [db, setDb] = React.useState(null);
   const [error, setError] = React.useState(null);
   const [execResults, setExecResults] = React.useState(null);
+  const [isQueryPersisting, setIsQueryPersisting] = React.useState(false);
+  const [currQuery, setCurrQuery] = React.useState("");
 
   // Load Local SQL DB
   React.useEffect(() => {
@@ -35,13 +46,17 @@ export default function SqlJsPage() {
     }
   };
 
+  // Handle Data Load
   async function handleDataLoad(e) {
+    // Handle Form
     e.preventDefault();
     console.log(e);
 
+    // SQL Table Paramerters
     let currTable = e.target[0].value;
     let currFile = e.target[1].files[0];
 
+    // Parse Out FIles
     let fr = new FileReader();
     fr.readAsText(currFile, "utf-8");
     fr.onloadend = async (j) => {
@@ -77,49 +92,95 @@ export default function SqlJsPage() {
     };
   }
 
+  // Handle Persist Query
+
   return (
-    <Grid container sx={{ padding: "1%" }}>
-      <Grid item xs={12} sm={12} md={12} lg={12} xl={12}>
-        {db ? (
-          <>
-            <Grid container spacing={1}>
-              <Grid item xs={12} sm={12} md={12} lg={9} xl={9}>
-                <TextField
-                  fullWidth
-                  onChange={(e) => exec(e.target.value)}
-                  placeholder='Enter some SQL. No inspiration ? Try "select sqlite_version()"'
-                  rows={7}
-                  multiline
-                />
-              </Grid>
-              <Grid item xs={12} sm={12} md={12} lg={3} xl={3}>
-                <form
-                  onSubmit={(e) => {
-                    handleDataLoad(e);
+    <>
+      {db ? (
+        <>
+          <Grid
+            container
+            spacing={1}
+            alignItems="stretch"
+            sx={{ maxHeight: "30vh", p: 1 }}
+          >
+            <Grid item xs={12} sm={12} md={12} lg={9} xl={9}>
+              <TextField
+                fullWidth
+                value={currQuery}
+                // sx={{ height: "100%", minHeight: 400 }}
+                onChange={(e) => {
+                  if (isQueryPersisting) {
+                    exec(e.target.value);
+                  }
+                  setCurrQuery(e.target.value);
+                }}
+                placeholder='Enter some SQL. No inspiration ? Try "select sqlite_version()"'
+                rows={11}
+                size="large"
+                multiline
+              />
+            </Grid>
+            <Grid item xs={12} sm={12} md={12} lg={3} xl={3}>
+              <Stack
+                direction={"column"}
+                spacing={2}
+                justifyContent="space-between"
+                alignItems="center"
+              >
+                <Card
+                  sx={{
+                    width: "100%",
+                    height: "100%",
+                    backgroundColor: "transparent",
                   }}
                 >
-                  <FileForm />
-                </form>
-              </Grid>
+                  <form
+                    onSubmit={(e) => {
+                      handleDataLoad(e);
+                    }}
+                    style={{ width: "100%", height: "100%" }}
+                  >
+                    <FileForm />
+                  </form>
+                </Card>
+                <Button
+                  startIcon={
+                    <Checkbox
+                      size="small"
+                      checked={isQueryPersisting}
+                      onClick={() => {
+                        setIsQueryPersisting((e) => !e);
+                      }}
+                    />
+                  }
+                  onClick={() => exec(currQuery)}
+                  fullWidth
+                >
+                  Run Query
+                </Button>
+              </Stack>
             </Grid>
-            {/* On Error */}
-            <pre>
-              {error ? (
-                <Alert severity="warning">
-                  <AlertTitle>{"Error"}</AlertTitle>
-                  <p>{error.toString()}</p>
-                </Alert>
-              ) : null}
-            </pre>
-            {/* On Data */}
-            <pre>
-              {execResults ? <CustomDataGrid data={execResults} /> : ""}
-            </pre>
-          </>
-        ) : (
-          <pre>Loading...</pre>
-        )}
-      </Grid>
-    </Grid>
+            <Grid item xs={12} sm={12} md={12} lg={12} xl={12}>
+              {/* On Error */}
+              <pre>
+                {error ? (
+                  <Alert severity="warning">
+                    <AlertTitle>{"Error"}</AlertTitle>
+                    <p>{error.toString()}</p>
+                  </Alert>
+                ) : null}
+              </pre>
+              {/* On Data */}
+              <pre>
+                {execResults ? <CustomDataGrid data={execResults} /> : ""}
+              </pre>
+            </Grid>
+          </Grid>
+        </>
+      ) : (
+        <pre>Loading...</pre>
+      )}
+    </>
   );
 }

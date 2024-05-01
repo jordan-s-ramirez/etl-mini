@@ -5,7 +5,7 @@ import SqlEditor from "@/components/sql-editor/sql-editor";
 const Page = () => {
   return (
     <>
-      <h3 style={{ textAlign: "center" }}>SQL Editor</h3>
+      <h1 style={{ marginLeft: "1%", marginBottom: 10 }}>SQL Editor</h1>
       <SqlEditor />
     </>
   );

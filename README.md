@@ -12,8 +12,3 @@ Fetch packages
 `npm i`
 Run Local
 `npm run dev`
-
-## How Routing Works
-
-Uses navbar-config:
-title -> title.lower() -> title.replace(' ', '-')
