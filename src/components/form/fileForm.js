@@ -17,6 +17,8 @@ const VisuallyHiddenInput = styled("input")({
 });
 
 function InputFileUpload() {
+  const [fileData, setFileData] = React.useState(null);
+
   return (
     <Button
       component="label"
@@ -24,10 +26,24 @@ function InputFileUpload() {
       variant="contained"
       tabIndex={-1}
       startIcon={<MdFileUpload />}
+      type="file"
       fullWidth
     >
-      Upload file
-      <VisuallyHiddenInput type="file" required />
+      {fileData !== null ? fileData : "Upload File"}
+      <VisuallyHiddenInput
+        type="file"
+        required
+        onChange={(e) => {
+          let fileName;
+          try {
+            fileName = e.target.value.split("\\");
+            fileName = fileName.slice(-1)[0];
+          } catch {
+            fileName = "";
+          }
+          setFileData(fileName);
+        }}
+      />
     </Button>
   );
 }

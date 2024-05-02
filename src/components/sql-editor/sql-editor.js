@@ -92,8 +92,6 @@ export default function SqlJsPage() {
     };
   }
 
-  // Handle Persist Query
-
   return (
     <>
       {db ? (
@@ -108,8 +106,8 @@ export default function SqlJsPage() {
               <TextField
                 fullWidth
                 value={currQuery}
-                // sx={{ height: "100%", minHeight: 400 }}
                 onChange={(e) => {
+                  // Handle Query Persisting
                   if (isQueryPersisting) {
                     exec(e.target.value);
                   }
