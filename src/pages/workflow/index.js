@@ -3,53 +3,82 @@ import Workflow from "@/components/workflow/workflow";
 import { workflowConfigInitalEdges } from "@/util/workflow/workflowConfigInitalEdges";
 import { workflowConfigInitalNodes } from "@/util/workflow/workflowConfigInitalNodes";
 import React from "react";
-
-const initialNodes = [
-  {
-    id: "1",
-    title: "Loading please",
-  },
-  {
-    id: "2",
-    title: "wait!",
-    description: "SOMETHING HERE",
-  },
-  {
-    id: "3",
-    title: "wait!",
-    description: "SOMETHING HERE",
-  },
-  {
-    id: "4",
-    title: "wait!",
-    description: "SOMETHING HERE",
-  },
-  {
-    id: "5",
-    title: "wait!",
-    description: "SOMETHING HERE",
-  },
-  {
-    id: "6",
-    title: "wait!",
-    description: "SOMETHING HERE",
-  },
-];
+import { Grid } from "@mui/material";
+import { SidebarCreateNodesSection } from "@/components/workflow/sub-components/create-nodes";
 
 const Page = () => {
-  const [nodes, setNodes] = React.useState(initialNodes);
-  const [edges, setEdges] = React.useState([]);
+  // Sidebar Content
+  // const [sidebarContent, setSidebarContent] = React.useState({})
 
+  // Workflow
+  const [nodes, setNodes] = React.useState([]);
+  const [edges, setEdges] = React.useState([]);
+  // const [selectedNode, setSelectedNode] = React.useState(null);
+
+  // Handle Node Orginization
   React.useMemo(() => {
-    setNodes((e) => workflowConfigInitalNodes(e));
-    setEdges((_) => workflowConfigInitalEdges(nodes));
+    if (nodes.length !== 0) {
+      setNodes((e) => workflowConfigInitalNodes(e));
+      setEdges((_) => workflowConfigInitalEdges(nodes));
+    }
   }, [nodes]);
+
+  // Handle Node Selection
+  // React.useEffect(() => {
+  //   console.log(selectedNode);
+  // }, [selectedNode]);
+
+  // Handle Selection
+  function handleSidebarNodeSelection(nodeType) {
+    // New Node
+    let newNode = {
+      id: crypto.randomUUID(),
+      type: nodeType,
+    };
+
+    // Create New Node
+    if (nodeType === "dataInputNode") {
+      newNode = {
+        ...newNode,
+        data: {},
+        title: "Data Input",
+      };
+    } else if (nodeType === "sqlNode") {
+      newNode = {
+        ...newNode,
+        data: {},
+        title: "SQL Node",
+      };
+    }
+    setNodes((e) => [...e, newNode]);
+    setEdges((_) => workflowConfigInitalEdges(nodes));
+  }
 
   return (
     <>
-      <div style={{ width: "100%", height: "100%" }}>
-        <Workflow initialNodes={nodes} initialEdges={edges} />
-      </div>
+      <Grid container sx={{ height: "100%" }} direction="row-reverse">
+        <Grid item xs={12} sm={12} md={4} lg={3} xl={9}>
+          {/* <form>
+            <FileForm />
+          </form> */}
+          <SidebarCreateNodesSection
+            onSidebarSelection={(e) => {
+              handleSidebarNodeSelection(e);
+            }}
+          />
+        </Grid>
+        <Grid item xs={12} sm={12} md={8} lg={9} xl={3}>
+          <div style={{ width: "100%", height: "100%" }}>
+            <Workflow
+              currentNodes={nodes}
+              currentEdges={edges}
+              setSelectedNode={(e) => {
+                setSelectedNode(e);
+              }}
+            />
+          </div>
+        </Grid>
+      </Grid>
     </>
   );
 };

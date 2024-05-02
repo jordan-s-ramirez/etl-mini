@@ -11,7 +11,7 @@ import {
 import React from "react";
 import initSqlJs from "sql.js";
 import CustomDataGrid from "./sub-components/data-grid";
-import FileForm from "../form/fileForm";
+import { FileForm } from "../form/fileForm";
 
 export default function SqlJsPage() {
   const [db, setDb] = React.useState(null);

@@ -48,7 +48,7 @@ function InputFileUpload() {
   );
 }
 
-export default function FileForm() {
+export function FileForm() {
   return (
     <>
       <Stack
