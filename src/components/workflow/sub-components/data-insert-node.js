@@ -1,7 +1,13 @@
 import React from "react";
 import { styled } from "@mui/material/styles";
 import Button from "@mui/material/Button";
-import { Input, Card, Stack } from "@mui/material";
+import {
+  Select,
+  MenuItem,
+  Stack,
+  InputLabel,
+  FormControl,
+} from "@mui/material";
 import { MdFileUpload } from "react-icons/md";
 
 const VisuallyHiddenInput = styled("input")({
@@ -48,7 +54,7 @@ function InputFileUpload() {
   );
 }
 
-export function UploadDataForm() {
+export function DataInsertNode({ title }) {
   return (
     <>
       <Stack
@@ -57,8 +63,15 @@ export function UploadDataForm() {
         spacing={1}
         sx={{ height: "100%", p: 1, minHeight: 200 }}
       >
-        <h3 style={{ margin: 0 }}>Data Input Node</h3>
-        <Input fullWidth placeholder="Table Name" required />
+        <h3 style={{ margin: 0 }}>{title}</h3>
+        <FormControl>
+          <InputLabel id="demo-simple-select-label">Delimiter</InputLabel>
+          <Select label="Delimiter" required>
+            <MenuItem value={","}>Comma</MenuItem>
+            <MenuItem value={"|"}>Pipe</MenuItem>
+            <MenuItem value={"\t"}>Tab</MenuItem>
+          </Select>
+        </FormControl>
         <InputFileUpload />
         <Button type="submit" fullWidth>
           Load Data

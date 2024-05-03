@@ -4,14 +4,15 @@ const yPx = 100;
 export function workflowConfigInitalNodes(data) {
   if (data === undefined) return;
 
-  let rowLength = Math.ceil(Math.sqrt(data.length));
+  // let rowLength = Math.ceil(Math.sqrt(data.length));
   for (let i = 0; i < data.length; i++) {
     data[i] = {
       ...data[i],
       data: { label: data[i].title },
       position: {
-        x: xPx * (i % rowLength),
-        y: yPx * Math.floor(i / rowLength),
+        x: xPx * (i % 2),
+        // x: xPx * (i % rowLength),
+        y: yPx * i,
       },
     };
   }
