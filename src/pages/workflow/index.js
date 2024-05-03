@@ -12,7 +12,6 @@ import initSqlJs from "sql.js";
 const Page = () => {
   // DB States
   const [db, setDb] = React.useState(null);
-  const [execResults, setExecResults] = React.useState(null);
   const [error, setError] = React.useState(null);
   // Workflow
   const [nodes, setNodes] = React.useState([]);
@@ -45,11 +44,19 @@ const Page = () => {
     }
     try {
       const results = db.exec(sql);
-      setExecResults(results);
+      setNodes((e) => {
+        e[selectedNode.idx].nodeData = results;
+        return e;
+      });
+      setSelectedNode((e) => {
+        return {
+          ...e,
+          nodeData: results,
+        };
+      });
       setError(null);
     } catch (err) {
       console.log(err);
-      setExecResults(null);
       setError(err);
     }
   };
@@ -66,14 +73,14 @@ const Page = () => {
     if (nodeType === "dataInputNode") {
       newNode = {
         ...newNode,
-        nodeData: {},
+        nodeData: null,
         title: "Data Input",
         barSizing: { md: 4, lg: 3, xl: 3 },
       };
     } else if (nodeType === "sqlNode") {
       newNode = {
         ...newNode,
-        nodeData: {},
+        nodeData: null,
         title: "SQL Node",
         barSizing: { md: 6, lg: 6, xl: 6 },
       };
@@ -90,7 +97,7 @@ const Page = () => {
     // SQL Table Paramerters
     let currDilimiter = e.target[0].value;
     let currFile = e.target[2].files[0];
-    let currTable = selectedNode.id.replaceAll("-", "");
+    let currTable = "t" + selectedNode.id.replaceAll("-", "");
 
     // Parse Out FIles
     let fr = new FileReader();
@@ -124,7 +131,7 @@ const Page = () => {
 
       // Run SQL Commands
       exec(createQuery);
-      console.log(createQuery);
+      exec(`select * from ${currTable}`);
     };
   }
 
@@ -135,7 +142,11 @@ const Page = () => {
           handleNodeCreation(e);
         }}
       />
-      <Grid container sx={{ height: "100%" }} direction="row-reverse">
+      <Grid
+        container
+        sx={{ height: "100%", maxHeight: "100vh", overflow: "hidden" }}
+        direction="row-reverse"
+      >
         {selectedNode !== null ? (
           <Grid
             item
@@ -148,7 +159,12 @@ const Page = () => {
             <Card
               elevation={2}
               variant="outlined"
-              sx={{ height: "100%", borderRadius: 0 }}
+              sx={{
+                height: "100%",
+                borderRadius: 0,
+                maxHeight: "100vh",
+                overflowY: "scroll",
+              }}
             >
               {selectedNode.nodeType === "dataInputNode" ? (
                 <form
@@ -156,7 +172,10 @@ const Page = () => {
                     handleDataLoad(e);
                   }}
                 >
-                  <DataInsertNode title={selectedNode.title} />
+                  <DataInsertNode
+                    title={selectedNode.title}
+                    data={selectedNode.nodeData}
+                  />
                 </form>
               ) : null}
               {selectedNode.nodeType === "sqlNode" ? (

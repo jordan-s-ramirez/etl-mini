@@ -8,6 +8,7 @@ export function workflowConfigInitalNodes(data) {
   for (let i = 0; i < data.length; i++) {
     data[i] = {
       ...data[i],
+      idx: i,
       data: { label: data[i].title },
       position: {
         x: xPx * (i % 2),

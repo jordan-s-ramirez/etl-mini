@@ -9,6 +9,7 @@ import {
   FormControl,
 } from "@mui/material";
 import { MdFileUpload } from "react-icons/md";
+import DataImportGrid from "./data-import-grid";
 
 const VisuallyHiddenInput = styled("input")({
   clip: "rect(0 0 0 0)",
@@ -54,7 +55,7 @@ function InputFileUpload() {
   );
 }
 
-export function DataInsertNode({ title }) {
+export function DataInsertNode({ title, data }) {
   return (
     <>
       <Stack
@@ -76,6 +77,7 @@ export function DataInsertNode({ title }) {
         <Button type="submit" fullWidth>
           Load Data
         </Button>
+        {data !== null ? <DataImportGrid data={data} /> : null}
       </Stack>
     </>
   );
