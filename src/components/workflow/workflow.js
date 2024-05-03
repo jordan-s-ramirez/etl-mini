@@ -33,6 +33,8 @@ export default function Workflow({
   const onSelectionChange = (e) => {
     if (e !== undefined && e.hasOwnProperty("nodes") && e.nodes.length !== 0) {
       setSelectedNode(e.nodes[0]);
+    } else {
+      setSelectedNode(null);
     }
   };
 

@@ -44,12 +44,14 @@ const Page = () => {
         ...newNode,
         data: {},
         title: "Data Input",
+        barSizing: { md: 4, lg: 3, xl: 3 },
       };
     } else if (nodeType === "sqlNode") {
       newNode = {
         ...newNode,
         data: {},
         title: "SQL Node",
+        barSizing: { md: 6, lg: 6, xl: 6 },
       };
     }
     setNodes((e) => [...e, newNode]);
@@ -65,7 +67,14 @@ const Page = () => {
       />
       <Grid container sx={{ height: "100%" }} direction="row-reverse">
         {selectedNode !== null ? (
-          <Grid item xs={12} sm={12} md={4} lg={3} xl={3}>
+          <Grid
+            item
+            xs={12}
+            sm={12}
+            md={selectedNode.barSizing.md}
+            lg={selectedNode.barSizing.lg}
+            xl={selectedNode.barSizing.xl}
+          >
             {console.log(selectedNode)}
             {selectedNode.nodeType === "dataInputNode" ? (
               <>
@@ -84,18 +93,16 @@ const Page = () => {
           item
           xs={12}
           sm={12}
-          md={selectedNode !== null ? 8 : 12}
-          lg={selectedNode !== null ? 9 : 12}
-          xl={selectedNode !== null ? 9 : 12}
+          md={selectedNode !== null ? 12 - selectedNode.barSizing.md : 12}
+          lg={selectedNode !== null ? 12 - selectedNode.barSizing.lg : 12}
+          xl={selectedNode !== null ? 12 - selectedNode.barSizing.xl : 12}
         >
           <div style={{ width: "100%", height: "100%" }}>
             <Workflow
               currentNodes={nodes}
               currentEdges={edges}
               setSelectedNode={(e) => {
-                if (selectedNode === null || e.id !== selectedNode.id) {
-                  setSelectedNode(e);
-                }
+                setSelectedNode(e);
               }}
             />
           </div>
