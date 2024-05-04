@@ -3,17 +3,18 @@ import Workflow from "@/components/workflow/workflow";
 import { workflowConfigInitalEdges } from "@/util/workflow/workflowConfigInitalEdges";
 import { workflowConfigInitalNodes } from "@/util/workflow/workflowConfigInitalNodes";
 import React from "react";
-import { Card, Grid } from "@mui/material";
+import { Card, Grid, dialogContentClasses } from "@mui/material";
 import SelectionDial from "@/components/workflow/sub-components/selection-dial";
 import { DataInsertNode } from "@/components/workflow/sub-components/data-insert-node";
 import { SqlNode } from "@/components/workflow/sub-components/sql-node";
 import initSqlJs from "sql.js";
-import { PiSelectionPlusThin } from "react-icons/pi";
 
 const Page = () => {
   // DB States
   const [db, setDb] = React.useState(null);
   const [error, setError] = React.useState(null);
+  const [isQueryPersisting, setIsQueryPersisting] = React.useState(false);
+
   // Workflow
   const [nodes, setNodes] = React.useState([]);
   const [edges, setEdges] = React.useState([]);
@@ -23,7 +24,7 @@ const Page = () => {
   React.useMemo(() => {
     if (nodes.length !== 0) {
       setNodes((e) => workflowConfigInitalNodes(e));
-      // setEdges((_) => workflowConfigInitalEdges(nodes));
+      setEdges((_) => workflowConfigInitalEdges(nodes));
     }
   }, [nodes]);
 
@@ -46,28 +47,35 @@ const Page = () => {
     try {
       const results = db.exec(sql);
       setNodes((e) => {
-        e[selectedNode.idx].nodeData = results;
+        e[selectedNode.idx].nodeData = {
+          ...e[selectedNode.idx].nodeData,
+          results: results,
+        };
         return e;
       });
       setSelectedNode((e) => {
         return {
           ...e,
-          nodeData: results,
+          nodeData: {
+            ...e.nodeData,
+            results: results,
+          },
         };
       });
       console.log("SELECTED", selectedNode);
       setError(null);
     } catch (err) {
-      console.log(err);
-      setError(err);
+      console.log("QUERY ERROR:\n", err);
+      setError({ message: err.toString(), severity: "warning" });
     }
   }
 
-  // Handle Selection
+  // Handle Node Creation
   function handleNodeCreation(nodeType) {
+    console.log("CREATE NEW", nodeType);
     // New Node
     let newNode = {
-      id: crypto.randomUUID(),
+      id: "t" + crypto.randomUUID(),
       nodeType: nodeType,
     };
 
@@ -75,14 +83,14 @@ const Page = () => {
     if (nodeType === "dataInputNode") {
       newNode = {
         ...newNode,
-        nodeData: null,
+        nodeData: { query: "", results: null },
         title: "Data Input",
         barSizing: { md: 4, lg: 3, xl: 3 },
       };
     } else if (nodeType === "sqlNode") {
       newNode = {
         ...newNode,
-        nodeData: null,
+        nodeData: { query: "", results: null, tableList: [] },
         title: "SQL Node",
         barSizing: { md: 6, lg: 6, xl: 6 },
       };
@@ -91,7 +99,7 @@ const Page = () => {
     // setEdges((_) => workflowConfigInitalEdges(nodes));
   }
 
-  // Handle Data Load
+  // Handle File Data Load
   async function handleDataLoad(e) {
     // Handle Form
     e.preventDefault();
@@ -99,7 +107,7 @@ const Page = () => {
     // SQL Table Paramerters
     let currDilimiter = e.target[0].value;
     let currFile = e.target[2].files[0];
-    let currTable = "t" + selectedNode.id.replaceAll("-", "");
+    let currTable = selectedNode.id.replaceAll("-", "");
 
     // Parse Out FIles
     let fr = new FileReader();
@@ -135,6 +143,11 @@ const Page = () => {
       exec(createQuery);
       exec(`select * from ${currTable}`);
     };
+  }
+
+  // Handle SQL Node Query
+  async function handleSQLNode(query) {
+    exec(query);
   }
 
   return (
@@ -176,13 +189,51 @@ const Page = () => {
                 >
                   <DataInsertNode
                     title={selectedNode.title}
-                    data={selectedNode.nodeData}
+                    data={selectedNode.nodeData.results}
+                    error={error}
                   />
                 </form>
               ) : null}
               {selectedNode.nodeType === "sqlNode" ? (
                 <>
-                  <SqlNode title={selectedNode.title} />
+                  {console.log(
+                    "QUERY SELECTED NODE",
+                    selectedNode,
+                    selectedNode.nodeData.query,
+                  )}
+                  <SqlNode
+                    title={selectedNode.title}
+                    data={selectedNode.nodeData.results}
+                    currEdges={edges}
+                    error={error}
+                    isQueryPersisting={isQueryPersisting}
+                    setIsQueryPersisting={() => {
+                      setIsQueryPersisting((e) => !e);
+                    }}
+                    currId={selectedNode.id}
+                    setCurrQuery={(query) => {
+                      setNodes((e) => {
+                        e[selectedNode.idx].nodeData = {
+                          ...e[selectedNode.idx].nodeData,
+                          query: query,
+                        };
+                        return e;
+                      });
+                      setSelectedNode((e) => {
+                        return {
+                          ...e,
+                          nodeData: {
+                            ...e.nodeData,
+                            query: query,
+                          },
+                        };
+                      });
+                    }}
+                    currQuery={selectedNode.nodeData.query}
+                    handleSQLNode={(e) => {
+                      handleSQLNode(e);
+                    }}
+                  />
                 </>
               ) : null}
             </Card>

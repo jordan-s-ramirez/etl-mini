@@ -4,7 +4,7 @@ export function workflowConfigInitalEdges(data) {
   let edges = [];
   for (let i = 1; i < data.length; i++) {
     edges.push({
-      ...data[i],
+      // ...data[i],
       source: data[i - 1].id,
       target: data[i].id,
       // label: "test",

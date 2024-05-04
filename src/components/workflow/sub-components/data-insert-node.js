@@ -7,9 +7,11 @@ import {
   Stack,
   InputLabel,
   FormControl,
+  Alert,
+  AlertTitle,
 } from "@mui/material";
 import { MdFileUpload } from "react-icons/md";
-import DataImportGrid from "./data-import-grid";
+import { GenericDataGrid } from "@/components/tables/generic-data-grid";
 
 const VisuallyHiddenInput = styled("input")({
   clip: "rect(0 0 0 0)",
@@ -23,7 +25,7 @@ const VisuallyHiddenInput = styled("input")({
   width: 1,
 });
 
-function InputFileUpload() {
+function InputFileUpload({ setCurrFileType }) {
   const [fileData, setFileData] = React.useState(null);
 
   return (
@@ -41,6 +43,7 @@ function InputFileUpload() {
         type="file"
         required
         onChange={(e) => {
+          // Update File Name
           let fileName;
           try {
             fileName = e.target.value.split("\\");
@@ -49,13 +52,24 @@ function InputFileUpload() {
             fileName = "";
           }
           setFileData(fileName);
+
+          // Update File Type
+          if (/\.csv$/.test(fileName)) {
+            setCurrFileType(",");
+          } else if (/\.tsv$/.test(fileName)) {
+            setCurrFileType("\t");
+          } else if (/\.psv$/.test(fileName)) {
+            setCurrFileType("|");
+          }
         }}
       />
     </Button>
   );
 }
 
-export function DataInsertNode({ title, data }) {
+export function DataInsertNode({ title, data, error }) {
+  const [currFileType, setCurrFileType] = React.useState("");
+
   return (
     <>
       <Stack
@@ -67,17 +81,37 @@ export function DataInsertNode({ title, data }) {
         <h3 style={{ margin: 0 }}>{title}</h3>
         <FormControl>
           <InputLabel id="demo-simple-select-label">Delimiter</InputLabel>
-          <Select label="Delimiter" required>
+          <Select
+            label="Delimiter"
+            required
+            value={currFileType}
+            onChange={(e) => {
+              setCurrFileType(e.target.value);
+            }}
+          >
             <MenuItem value={","}>Comma</MenuItem>
             <MenuItem value={"|"}>Pipe</MenuItem>
             <MenuItem value={"\t"}>Tab</MenuItem>
           </Select>
         </FormControl>
-        <InputFileUpload />
+        <InputFileUpload
+          setCurrFileType={(e) => {
+            setCurrFileType(e);
+          }}
+        />
         <Button type="submit" fullWidth>
           Load Data
         </Button>
-        <DataImportGrid data={data} />
+        {error === null ? (
+          <GenericDataGrid data={data} />
+        ) : (
+          <>
+            <Alert severity="warning">
+              <AlertTitle>{"Error"}</AlertTitle>
+              <p>{error.toString()}</p>
+            </Alert>
+          </>
+        )}
       </Stack>
     </>
   );

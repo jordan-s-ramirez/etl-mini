@@ -1,7 +1,7 @@
 import { DataGrid } from "@mui/x-data-grid";
 import React from "react";
 
-export default function DataImportGrid({ data }) {
+export function GenericDataGrid({ data }) {
   // const [currData, setCurrData] = React.useState([]);
   const [currCols, setCurrCols] = React.useState([]);
   const [currRows, setCurrRows] = React.useState([]);
