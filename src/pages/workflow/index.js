@@ -8,6 +8,7 @@ import SelectionDial from "@/components/workflow/sub-components/selection-dial";
 import { DataInsertNode } from "@/components/workflow/sub-components/data-insert-node";
 import { SqlNode } from "@/components/workflow/sub-components/sql-node";
 import initSqlJs from "sql.js";
+import { PiSelectionPlusThin } from "react-icons/pi";
 
 const Page = () => {
   // DB States
@@ -38,7 +39,7 @@ const Page = () => {
   }, []);
 
   // Run SQL Query
-  const exec = (sql) => {
+  function exec(sql) {
     if (sql === "") {
       return;
     }
@@ -54,12 +55,13 @@ const Page = () => {
           nodeData: results,
         };
       });
+      console.log("SELECTED", selectedNode);
       setError(null);
     } catch (err) {
       console.log(err);
       setError(err);
     }
-  };
+  }
 
   // Handle Selection
   function handleNodeCreation(nodeType) {

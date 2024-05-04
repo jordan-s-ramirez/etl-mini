@@ -77,7 +77,7 @@ export function DataInsertNode({ title, data }) {
         <Button type="submit" fullWidth>
           Load Data
         </Button>
-        {data !== null ? <DataImportGrid data={data} /> : null}
+        <DataImportGrid data={data} />
       </Stack>
     </>
   );

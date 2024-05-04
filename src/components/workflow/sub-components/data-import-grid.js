@@ -9,6 +9,7 @@ export default function DataImportGrid({ data }) {
   React.useMemo(() => {
     // Return if there is no data
     if (
+      data === null ||
       data === undefined ||
       data.length === 0 ||
       data[0].columns === undefined ||
@@ -16,7 +17,6 @@ export default function DataImportGrid({ data }) {
     ) {
       return;
     }
-
     // Configure Column Def
     let newCols = [];
     for (let i = 0; i < data[0].columns.length; i++) {
