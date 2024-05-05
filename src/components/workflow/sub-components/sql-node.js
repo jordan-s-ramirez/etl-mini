@@ -1,6 +1,6 @@
 import React from "react";
 import Button from "@mui/material/Button";
-import { Input, Stack, Checkbox, TextField } from "@mui/material";
+import { Input, Stack, Checkbox, localQueryText, TextField } from "@mui/material";
 import { GenericDataGrid } from "@/components/tables/generic-data-grid";
 
 export function SqlNode({
@@ -11,9 +11,16 @@ export function SqlNode({
   currEdges,
   selectedNodeData,
 }) {
-  const tableList = React.useMemo(() => {
-    return currEdges.filter((e) => e.target === selectedNodeData.id);
-  }, [currEdges, selectedNodeData]);
+  // const tableList = React.useMemo(() => {
+  //   return currEdges.filter((e) => e.target === selectedNodeData.id);
+  // }, [currEdges, selectedNodeData]);
+
+  const tableList = []
+  const [localQueryText, setLocalQueryText] = React.useState("")
+
+  React.useEffect(()=>{
+    setLocalQueryText(selectedNodeData.query)
+  },[])
 
   return (
     <>
@@ -46,8 +53,8 @@ export function SqlNode({
             />
           }
           onClick={() => {
-            console.log("RUN QUERY", selectedNodeData.nodeData.query);
-            sendQuery(selectedNodeData.nodeData.query);
+            console.log("RUN QUERY", localQueryText);
+            sendQuery(localQueryText);
           }}
           type="submit"
           fullWidth
@@ -56,13 +63,13 @@ export function SqlNode({
         </Button>
         <TextField
           fullWidth
-          value={selectedNodeData.nodeData.query}
+          value={localQueryText}
           onChange={(e) => {
             if (isQueryPersisting) {
               // Handle Query Persisting
               sendQuery(e.target.value);
             }
-            console.log("ONCHANGE", e.target.value);
+            setLocalQueryText(e.target.value);
             setCurrQuery(e.target.value);
           }}
           placeholder='Enter some SQL. No inspiration ? Try "select sqlite_version()"'
@@ -70,7 +77,7 @@ export function SqlNode({
           size="large"
           multiline
         />
-        <GenericDataGrid data={selectedNodeData.nodeData.results} />
+        <GenericDataGrid data={selectedNodeData.results} />
       </Stack>
     </>
   );
