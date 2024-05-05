@@ -150,6 +150,23 @@ const Page = () => {
     exec(query);
   }
 
+  // Function Update Node Query
+  function updateNodeQuery(query) {
+    setSelectedNode((e) => {
+      return {
+        ...e,
+        nodeData: {
+          ...e.nodeData,
+          query: query,
+        },
+      };
+    });
+    setNodes((e) => {
+      e[selectedNode.idx] = selectedNode;
+      return e;
+    });
+  }
+
   return (
     <>
       <SelectionDial
@@ -202,35 +219,17 @@ const Page = () => {
                     selectedNode.nodeData.query,
                   )}
                   <SqlNode
-                    title={selectedNode.title}
-                    data={selectedNode.nodeData.results}
                     currEdges={edges}
                     error={error}
                     isQueryPersisting={isQueryPersisting}
                     setIsQueryPersisting={() => {
                       setIsQueryPersisting((e) => !e);
                     }}
-                    currId={selectedNode.id}
                     setCurrQuery={(query) => {
-                      setNodes((e) => {
-                        e[selectedNode.idx].nodeData = {
-                          ...e[selectedNode.idx].nodeData,
-                          query: query,
-                        };
-                        return e;
-                      });
-                      setSelectedNode((e) => {
-                        return {
-                          ...e,
-                          nodeData: {
-                            ...e.nodeData,
-                            query: query,
-                          },
-                        };
-                      });
+                      updateNodeQuery(query);
                     }}
-                    currQuery={selectedNode.nodeData.query}
-                    handleSQLNode={(e) => {
+                    selectedNodeData={selectedNode}
+                    sendQuery={(e) => {
                       handleSQLNode(e);
                     }}
                   />

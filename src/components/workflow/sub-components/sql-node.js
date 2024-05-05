@@ -4,19 +4,16 @@ import { Input, Stack, Checkbox, TextField } from "@mui/material";
 import { GenericDataGrid } from "@/components/tables/generic-data-grid";
 
 export function SqlNode({
-  title,
-  data,
   isQueryPersisting,
   setIsQueryPersisting,
-  currQuery,
   setCurrQuery,
-  handleSQLNode,
+  sendQuery,
   currEdges,
-  currId,
+  selectedNodeData,
 }) {
   const tableList = React.useMemo(() => {
-    return currEdges.filter((e) => e.target === currId);
-  }, [currEdges, currId]);
+    return currEdges.filter((e) => e.target === selectedNodeData.id);
+  }, [currEdges, selectedNodeData]);
 
   return (
     <>
@@ -26,7 +23,7 @@ export function SqlNode({
         spacing={1}
         sx={{ height: "100%", p: 1, minHeight: 200 }}
       >
-        <h3 style={{ margin: 0 }}>{title}</h3>
+        <h3 style={{ margin: 0 }}>{selectedNodeData.title}</h3>
         {tableList.map((obj) => {
           return (
             <Input
@@ -49,8 +46,8 @@ export function SqlNode({
             />
           }
           onClick={() => {
-            console.log("RUN QUERY", currQuery);
-            handleSQLNode(currQuery);
+            console.log("RUN QUERY", selectedNodeData.nodeData.query);
+            sendQuery(selectedNodeData.nodeData.query);
           }}
           type="submit"
           fullWidth
@@ -59,11 +56,11 @@ export function SqlNode({
         </Button>
         <TextField
           fullWidth
-          value={currQuery}
+          value={selectedNodeData.nodeData.query}
           onChange={(e) => {
             if (isQueryPersisting) {
               // Handle Query Persisting
-              handleSQLNode(e.target.value);
+              sendQuery(e.target.value);
             }
             console.log("ONCHANGE", e.target.value);
             setCurrQuery(e.target.value);
@@ -73,7 +70,7 @@ export function SqlNode({
           size="large"
           multiline
         />
-        <GenericDataGrid data={data} />
+        <GenericDataGrid data={selectedNodeData.nodeData.results} />
       </Stack>
     </>
   );
