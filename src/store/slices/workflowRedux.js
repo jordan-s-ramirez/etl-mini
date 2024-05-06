@@ -15,7 +15,7 @@ export const workflowRedux = createSlice({
 
       // New Node - General Config
       let newNode = {
-        id: "t" + crypto.randomUUID(),
+        id: "t" + crypto.randomUUID().replaceAll("-", ""),
         nodeType: nodeType,
         nodeData: { 
           query: "", 

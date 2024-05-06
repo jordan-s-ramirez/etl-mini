@@ -58,7 +58,7 @@ export function WorkflowMain() {
     // SQL Table Paramerters
     let currDilimiter = e.target[0].value;
     let currFile = e.target[2].files[0];
-    let currTable = selectedNode.id.replaceAll("-", "");
+    let currTable = selectedNode.id;
 
     // Parse Out FIles
     let fr = new FileReader();
