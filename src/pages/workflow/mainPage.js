@@ -157,7 +157,7 @@ export function WorkflowMain() {
                     setCurrQuery={(query) => {
                       dispatch(updateNodeQuery(query))
                     }}
-                    selectedNodeData={selectedNode.nodeData}
+                    selectedNode={selectedNode}
                     sendQuery={(e) => {
                       handleSQLNode(e);
                     }}
