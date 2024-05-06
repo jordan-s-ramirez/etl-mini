@@ -17,8 +17,12 @@ export const workflowRedux = createSlice({
       let newNode = {
         id: "t" + crypto.randomUUID(),
         nodeType: nodeType,
-        source: [],
-        target: [],
+        nodeData: { 
+          query: "", 
+          results: null, 
+          source: [],
+          target: [], 
+        },
       };
   
       // Configure New Node
@@ -26,7 +30,6 @@ export const workflowRedux = createSlice({
         newNode = {
           ...newNode,
           type: "input",
-          nodeData: { query: "", results: null },
           title: "Data Input",
           barSizing: { md: 4, lg: 3, xl: 3 },
         };
@@ -34,7 +37,6 @@ export const workflowRedux = createSlice({
         newNode = {
           ...newNode,
           type: "default",
-          nodeData: { query: "", results: null, tableList: [] },
           title: "SQL Node",
           barSizing: { md: 6, lg: 6, xl: 6 },
         };
@@ -44,20 +46,18 @@ export const workflowRedux = createSlice({
 
       // Add new edge to selected node
       if(nodeType !== "dataInputNode" && state.selectedNode !== null) {
-        console.log("MAEKE NEW CONNECTION")
         state.edges.push({
-          // ...data[i],
-          source: newNode.id,
-          target: state.selectedNode.id,
+          // label: "test",
+          source: state.selectedNode.id,
+          target: newNode.id,
           sourceHandle: null,
           targetHandle: null,
-          // label: "test",
           type: "simplebezier",
         }) 
       }
 
       // Update Selected Node
-      state.selectedNode = state.nodes[state.nodes.length - 1]
+      state.selectedNode = newNode
     },
     updateNodeQuery: (state, action) => {
       console.log(action.payload)
@@ -95,7 +95,7 @@ export const workflowRedux = createSlice({
     applyEdgeChangesRdx: (state, action) => {
       state.edges = applyEdgeChanges(action.payload, state.edges)
     },
-    addNewEdge: (state,action) => {
+    addNewEdge: (state, action) => {
       state.edges.push(action.payload)
     }
   },
