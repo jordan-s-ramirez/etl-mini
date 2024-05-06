@@ -60,7 +60,6 @@ export const workflowRedux = createSlice({
       state.selectedNode = newNode
     },
     updateNodeQuery: (state, action) => {
-      console.log(action.payload)
       // Update Selected Node
       state.selectedNode = {
         ...state.selectedNode,

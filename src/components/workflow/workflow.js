@@ -14,17 +14,17 @@ export default function Workflow({
   const dispatch = useDispatch()
 
   const onNodesChange = React.useCallback((changes) => {
-    console.log("NODE CHANGE TRIGGERD", changes)
+    // console.log("NODE CHANGE TRIGGERD", changes)
     dispatch(applyNodeChangesRdx(changes))
   }, []);
 
   const onEdgesChange = React.useCallback((changes) => {
-    console.log("ENDGES CHANGES TRIGGERED",changes)
+    // console.log("ENDGES CHANGES TRIGGERED",changes)
     dispatch(applyEdgeChangesRdx(changes))
   },[]);
 
   const onConnection = React.useCallback((changes)=>{
-    console.log("ON CONNECTION", changes)
+    // console.log("ON CONNECTION", changes)
     dispatch(addNewEdge(changes))
   },[])
 

@@ -11,11 +11,9 @@ export function SqlNode({
   currEdges,
   selectedNodeData,
 }) {
-  // const tableList = React.useMemo(() => {
-  //   return currEdges.filter((e) => e.target === selectedNodeData.id);
-  // }, [currEdges, selectedNodeData]);
-
-  const tableList = []
+  const tableList = React.useMemo(() => {
+    return currEdges.filter((e) => e.target === selectedNodeData.id);
+  }, [currEdges, selectedNodeData]);
   const [localQueryText, setLocalQueryText] = React.useState("")
 
   React.useEffect(()=>{
