@@ -2,32 +2,30 @@ import React from "react";
 import ReactFlow, {
   Controls,
   Background,
-  applyNodeChanges,
-  applyEdgeChanges,
 } from "reactflow";
 import "reactflow/dist/style.css";
-
+import { useDispatch } from "react-redux";
+import { applyNodeChangesRdx, applyEdgeChangesRdx, addNewEdge } from "@/store/slices/workflowRedux";
 export default function Workflow({
   currentNodes,
   currentEdges,
   setSelectedNode,
 }) {
+  const dispatch = useDispatch()
 
   const onNodesChange = React.useCallback((changes) => {
-      console.log("NODE CHANGE TRIGGERD", changes)},
-      // setNodes((nds) => applyNodeChanges(changes, nds))},
-    [],
-  );
-  
+    console.log("NODE CHANGE TRIGGERD", changes)
+    dispatch(applyNodeChangesRdx(changes))
+  }, []);
+
   const onEdgesChange = React.useCallback((changes) => {
-      console.log("ENDGES CHANGES TRIGGERED",changes)
-      // setEdges((eds) => applyEdgeChanges(changes, eds))
-    },
-    [],
-  );
+    console.log("ENDGES CHANGES TRIGGERED",changes)
+    dispatch(applyEdgeChangesRdx(changes))
+  },[]);
 
   const onConnection = React.useCallback((changes)=>{
     console.log("ON CONNECTION", changes)
+    dispatch(addNewEdge(changes))
   },[])
 
   const onSelectionChange = (e) => {

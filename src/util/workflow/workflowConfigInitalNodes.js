@@ -18,14 +18,14 @@ export function workflowConfigInitalNodes(data) {
     };
   }
 
-  data[data.length - 1] = {
-    ...data[data.length - 1],
-    type: "output",
-  };
-  data[0] = {
-    ...data[0],
-    type: "input",
-  };
+  // data[data.length - 1] = {
+  //   ...data[data.length - 1],
+  //   type: "output",
+  // };
+  // data[0] = {
+  //   ...data[0],
+  //   type: "input",
+  // };
 
   return data;
 }

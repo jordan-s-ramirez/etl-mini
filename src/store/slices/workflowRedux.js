@@ -1,6 +1,7 @@
 import { createSlice } from '@reduxjs/toolkit'
 import { workflowConfigInitalEdges } from '@/util/workflow/workflowConfigInitalEdges';
 import { workflowConfigInitalNodes } from '@/util/workflow/workflowConfigInitalNodes';
+import {applyNodeChanges, applyEdgeChanges} from "reactflow"; 
 export const workflowRedux = createSlice({
   name: 'workflowRedux',
   initialState: {
@@ -12,7 +13,7 @@ export const workflowRedux = createSlice({
     createNewNode: (state,action) => {
       let nodeType = action.payload
 
-      // New Node
+      // New Node - General Config
       let newNode = {
         id: "t" + crypto.randomUUID(),
         nodeType: nodeType,
@@ -20,10 +21,11 @@ export const workflowRedux = createSlice({
         target: [],
       };
   
-      // Create New Node
+      // Configure New Node
       if (nodeType === "dataInputNode") {
         newNode = {
           ...newNode,
+          type: "input",
           nodeData: { query: "", results: null },
           title: "Data Input",
           barSizing: { md: 4, lg: 3, xl: 3 },
@@ -31,6 +33,7 @@ export const workflowRedux = createSlice({
       } else if (nodeType === "sqlNode") {
         newNode = {
           ...newNode,
+          type: "default",
           nodeData: { query: "", results: null, tableList: [] },
           title: "SQL Node",
           barSizing: { md: 6, lg: 6, xl: 6 },
@@ -38,7 +41,22 @@ export const workflowRedux = createSlice({
       }
       state.nodes.push(newNode)
       state.nodes = workflowConfigInitalNodes(state.nodes)
-      state.edges = workflowConfigInitalEdges(state.nodes)
+
+      // Add new edge to selected node
+      if(nodeType !== "dataInputNode" && state.selectedNode !== null) {
+        console.log("MAEKE NEW CONNECTION")
+        state.edges.push({
+          // ...data[i],
+          source: newNode.id,
+          target: state.selectedNode.id,
+          sourceHandle: null,
+          targetHandle: null,
+          // label: "test",
+          type: "simplebezier",
+        }) 
+      }
+
+      // Update Selected Node
       state.selectedNode = state.nodes[state.nodes.length - 1]
     },
     updateNodeQuery: (state, action) => {
@@ -71,6 +89,15 @@ export const workflowRedux = createSlice({
     setSelectedNode: (state, action) => {
       state.selectedNode = action.payload
     },
+    applyNodeChangesRdx: (state, action) => {
+      state.nodes = applyNodeChanges(action.payload, state.nodes)
+    },
+    applyEdgeChangesRdx: (state, action) => {
+      state.edges = applyEdgeChanges(action.payload, state.edges)
+    },
+    addNewEdge: (state,action) => {
+      state.edges.push(action.payload)
+    }
   },
 })
 
@@ -80,6 +107,9 @@ export const {
   , updateNodeQuery
   , updateNodeQueryResults 
   , setSelectedNode
+  , applyNodeChangesRdx
+  , applyEdgeChangesRdx
+  , addNewEdge
 } = workflowRedux.actions
 
 export default workflowRedux.reducer
