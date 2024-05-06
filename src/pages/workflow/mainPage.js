@@ -42,7 +42,6 @@ export function WorkflowMain() {
     try {
       const results = db.exec(sql);
       dispatch(updateNodeQueryResults(results))
-      console.log("SELECTED", selectedNode);
       setError(null);
     } catch (err) {
       console.log("QUERY ERROR:\n", err);

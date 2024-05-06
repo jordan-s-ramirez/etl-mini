@@ -11,6 +11,9 @@ export function SqlNode({
   currEdges,
   selectedNode,
 }) {
+  // Render
+  React.useEffect(()=>{},[selectedNode])
+
   // Table List
   const tableList = React.useMemo(() => {
     return currEdges.filter((e) => e.target === selectedNode.id);

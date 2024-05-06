@@ -82,6 +82,8 @@ export const workflowRedux = createSlice({
         },
       }
       
+      console.log("QUERY RESULTS", action.payload)
+
       // Update All Nodes
       state.nodes[state.selectedNode.idx] = state.selectedNode
     },

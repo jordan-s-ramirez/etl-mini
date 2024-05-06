@@ -35,7 +35,7 @@ export function GenericDataGrid({ data }) {
         itemData[newCols[i].field] = item[i];
       }
       rowData.push(itemData);
-      itemData = { id: newCols[0].field + item[0] };
+      itemData = { id: crypto.randomUUID() };
     }
 
     // Update States
