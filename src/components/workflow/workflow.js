@@ -12,23 +12,23 @@ export default function Workflow({
   currentEdges,
   setSelectedNode,
 }) {
-  const [nodes, setNodes] = React.useState([]);
-  const [edges, setEdges] = React.useState([]);
 
-  React.useEffect(() => {
-    console.log(currentNodes);
-    setNodes(currentNodes);
-    setEdges(currentEdges);
-  }, [currentNodes, currentEdges]);
-
-  const onNodesChange = React.useCallback(
-    (changes) => setNodes((nds) => applyNodeChanges(changes, nds)),
+  const onNodesChange = React.useCallback((changes) => {
+      console.log("NODE CHANGE TRIGGERD", changes)},
+      // setNodes((nds) => applyNodeChanges(changes, nds))},
     [],
   );
-  const onEdgesChange = React.useCallback(
-    (changes) => setEdges((eds) => applyEdgeChanges(changes, eds)),
+  
+  const onEdgesChange = React.useCallback((changes) => {
+      console.log("ENDGES CHANGES TRIGGERED",changes)
+      // setEdges((eds) => applyEdgeChanges(changes, eds))
+    },
     [],
   );
+
+  const onConnection = React.useCallback((changes)=>{
+    console.log("ON CONNECTION", changes)
+  },[])
 
   const onSelectionChange = (e) => {
     if (e !== undefined && e.hasOwnProperty("nodes") && e.nodes.length !== 0) {
@@ -42,12 +42,13 @@ export default function Workflow({
     <>
       <div style={{ height: "100%", width: "100%" }}>
         <ReactFlow
-          nodes={nodes}
+          nodes={currentNodes}
           onNodesChange={onNodesChange}
-          edges={edges}
+          edges={currentEdges}
           onEdgesChange={onEdgesChange}
           fitView
           onSelectionChange={onSelectionChange}
+          onConnect={onConnection}
         >
           <Background />
           <Controls />

@@ -16,6 +16,8 @@ export const workflowRedux = createSlice({
       let newNode = {
         id: "t" + crypto.randomUUID(),
         nodeType: nodeType,
+        source: [],
+        target: [],
       };
   
       // Create New Node
@@ -36,7 +38,7 @@ export const workflowRedux = createSlice({
       }
       state.nodes.push(newNode)
       state.nodes = workflowConfigInitalNodes(state.nodes)
-      state.edges = workflowConfigInitalEdges(state.edges)
+      state.edges = workflowConfigInitalEdges(state.nodes)
       state.selectedNode = state.nodes[state.nodes.length - 1]
     },
     updateNodeQuery: (state, action) => {
