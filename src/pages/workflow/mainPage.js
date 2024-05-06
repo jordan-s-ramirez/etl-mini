@@ -19,20 +19,9 @@ export function WorkflowMain() {
   const [isQueryPersisting, setIsQueryPersisting] = React.useState(false);
 
   // Workflow
-  // const [nodes, setNodes] = React.useState([]);
-  // const [edges, setEdges] = React.useState([]);
-  // const [selectedNode, setSelectedNode] = React.useState(null);
   const nodes = useSelector((state) => state.workflow.nodes)
   const edges = useSelector((state) => state.workflow.edges)
   const selectedNode = useSelector((state) => state.workflow.selectedNode)
-
-  // Handle Node Orginization
-  // React.useMemo(() => {
-  //   if (nodes.length !== 0) {
-  //     setNodes((e) => workflowConfigInitalNodes(e));
-  //     setEdges((_) => workflowConfigInitalEdges(nodes));
-  //   }
-  // }, [nodes]);
 
   // Load Local SQL DB
   React.useEffect(() => {
