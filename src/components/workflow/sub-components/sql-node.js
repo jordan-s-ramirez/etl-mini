@@ -11,9 +11,6 @@ export function SqlNode({
   currEdges,
   selectedNode,
 }) {
-  // Render
-  React.useEffect(()=>{},[selectedNode])
-
   // Table List
   const tableList = React.useMemo(() => {
     return currEdges.filter((e) => e.target === selectedNode.id);
@@ -30,19 +27,15 @@ export function SqlNode({
     await e.preventDefault()
 
     // Update Local Query Tables
-    setLocalQueryText(query=>{
-      // Apply Table Replacements
-      let configuredQuery = query
-      for(let idx in tableList) {
-        configuredQuery = configuredQuery.replaceAll(e.target[idx].value, tableList[idx].source)
-      }
+    // Apply Table Replacements
+    let configuredQuery = selectedNode.nodeData.query
+    for(let idx in tableList) {
+      configuredQuery = configuredQuery.replaceAll(e.target[idx].value, tableList[idx].source)
+    }
 
-      // Send Query Command
-      sendQuery(configuredQuery);
+    // Send Query Command
+    sendQuery(configuredQuery);
 
-      // Update State
-      return query
-    })
   }
 
   return (
@@ -84,13 +77,12 @@ export function SqlNode({
         </form>
         <TextField
           fullWidth
-          value={localQueryText}
+          value={selectedNode.nodeData.query}
           onChange={(e) => {
             if (isQueryPersisting) {
               // Handle Query Persisting
               sendQuery(e.target.value);
             }
-            setLocalQueryText(e.target.value);
 
             // Apply Table Names
             setCurrQuery(e.target.value);
