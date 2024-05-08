@@ -90,7 +90,7 @@ export const workflowRedux = createSlice({
     setSelectedNode: (state, action) => {
       if(state.selectedNode === null || 
         (action.payload !== null &&
-        state.selectedNode.id === action.payload.id)
+        state.selectedNode.id !== action.payload.id)
       ) {
         state.selectedNode = action.payload
       }
