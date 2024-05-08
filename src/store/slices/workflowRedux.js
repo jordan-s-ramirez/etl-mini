@@ -68,9 +68,15 @@ export const workflowRedux = createSlice({
           query: action.payload,
         },
       }
-      console.log("QUERY UPDATED", action.payload)
+      
       // Update All Nodes
-      // state.nodes[state.selectedNode.idx] = state.selectedNode
+      state.nodes[state.selectedNode.idx] = JSON.parse(JSON.stringify({
+        ...state.selectedNode,
+        nodeData: {
+          ...state.selectedNode.nodeData,
+          query: action.payload,
+        },
+      }))
     },
     updateNodeQueryResults: (state, action) => {
       // Update Selected Node
@@ -82,13 +88,19 @@ export const workflowRedux = createSlice({
         },
       }
       
-      console.log("QUERY RESULTS", action.payload)
-
       // Update All Nodes
-      // state.nodes[state.selectedNode.idx] = state.selectedNode
+      state.nodes[state.selectedNode.idx] = state.nodes[state.selectedNode.idx] = JSON.parse(JSON.stringify({
+        ...state.selectedNode,
+        nodeData: {
+          ...state.selectedNode.nodeData,
+          results: action.payload,
+        },
+      }))
     },
     setSelectedNode: (state, action) => {
-      if(state.selectedNode === null || 
+      if(
+        state.selectedNode === null || 
+        action.payload === null ||
         (action.payload !== null &&
         state.selectedNode.id !== action.payload.id)
       ) {
