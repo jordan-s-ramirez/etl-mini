@@ -15,6 +15,8 @@ export function GenericDataGrid({ data }) {
       data[0].columns === undefined ||
       data[0].values === undefined
     ) {
+      setCurrCols([])
+      setCurrRows([])
       return;
     }
     // Configure Column Def

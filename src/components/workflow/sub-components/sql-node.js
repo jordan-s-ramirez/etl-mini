@@ -17,10 +17,10 @@ export function SqlNode({
   }, [currEdges, selectedNode]);
   
   // Query Input
-  const [localQueryText, setLocalQueryText] = React.useState("")
-  React.useEffect(()=>{
-    setLocalQueryText(selectedNode.nodeData.query)
-  },[])
+  // const [localQueryText, setLocalQueryText] = React.useState("")
+  // React.useEffect(()=>{
+  //   setLocalQueryText(selectedNode.nodeData.query)
+  // },[])
 
   // Handle Configure Query Run
   async function handleQueryRun(e) {
