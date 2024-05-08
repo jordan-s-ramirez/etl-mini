@@ -15,12 +15,6 @@ export function SqlNode({
   const tableList = React.useMemo(() => {
     return currEdges.filter((e) => e.target === selectedNode.id);
   }, [currEdges, selectedNode]);
-  
-  // Query Input
-  // const [localQueryText, setLocalQueryText] = React.useState("")
-  // React.useEffect(()=>{
-  //   setLocalQueryText(selectedNode.nodeData.query)
-  // },[])
 
   // Handle Configure Query Run
   async function handleQueryRun(e) {
@@ -53,7 +47,7 @@ export function SqlNode({
               <Input
                 key={obj.id}
                 fullWidth
-                placeholder="Table Name"
+                placeholder={`Table Name - ${obj.sourceTitle}`}
                 required
                 value={obj.id}
               />

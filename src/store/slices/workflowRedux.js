@@ -54,7 +54,9 @@ export const workflowRedux = createSlice({
           targetHandle: null,
           type: "simplebezier",
           sourceIdx: state.selectedNode.idx,
-          targetIdx: newNode.idx
+          targetIdx: newNode.idx,
+          sourceTitle: state.selectedNode.title,
+          targetTitle: newNode.title
         }) 
       }
 
@@ -119,13 +121,14 @@ export const workflowRedux = createSlice({
       let targetId = action.payload.target
       let sourceId = action.payload.source
       let nodeIdx = 0
-      let targetIdx, sourceIdx
+      let targetIdx, sourceIdx, targetTitle, sourceTitle
       
       // Get Target Idx
       while (targetId !== state.nodes[nodeIdx].id && nodeIdx < state.nodes.length) {
         nodeIdx += 1
       }
       targetIdx = state.nodes[nodeIdx].idx
+      targetTitle = state.nodes[nodeIdx].title
 
       // Get Source Idx
       nodeIdx = 0
@@ -133,11 +136,14 @@ export const workflowRedux = createSlice({
         nodeIdx += 1
       }
       sourceIdx = state.nodes[nodeIdx].idx
-
+      sourceTitle = state.nodes[nodeIdx].title
+      
       // Push New Edge
       state.edges.push({
         targetIdx: targetIdx,
         sourceIdx: sourceIdx,
+        sourceTitle: sourceTitle,
+        targetTitle: sourceTitle,
         ...action.payload
       })
     }
