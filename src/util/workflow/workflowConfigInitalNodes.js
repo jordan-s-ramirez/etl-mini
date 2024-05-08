@@ -7,7 +7,6 @@ export function workflowConfigInitalNodes(data) {
   // let rowLength = Math.ceil(Math.sqrt(data.length));
   for (let i = 0; i < data.length; i++) {
     data[i] = {
-      ...data[i],
       idx: i,
       data: { label: data[i].title },
       position: {
@@ -15,6 +14,7 @@ export function workflowConfigInitalNodes(data) {
         // x: xPx * (i % rowLength),
         y: yPx * i,
       },
+      ...data[i],
     };
   }
 

@@ -30,14 +30,14 @@ export const workflowRedux = createSlice({
         newNode = {
           ...newNode,
           type: "input",
-          title: "Data Input",
+          title: "Data Input " + (state.nodes.length + 1).toString(),
           barSizing: { md: 4, lg: 3, xl: 3 },
         };
       } else if (nodeType === "sqlNode") {
         newNode = {
           ...newNode,
           type: "default",
-          title: "SQL Node",
+          title: "SQL Node " + (state.nodes.length + 1).toString(),
           barSizing: { md: 6, lg: 6, xl: 6 },
         };
       }
@@ -53,6 +53,8 @@ export const workflowRedux = createSlice({
           sourceHandle: null,
           targetHandle: null,
           type: "simplebezier",
+          sourceIdx: state.selectedNode.idx,
+          targetIdx: newNode.idx
         }) 
       }
 
@@ -114,7 +116,30 @@ export const workflowRedux = createSlice({
       state.edges = applyEdgeChanges(action.payload, state.edges)
     },
     addNewEdge: (state, action) => {
-      state.edges.push(action.payload)
+      let targetId = action.payload.target
+      let sourceId = action.payload.source
+      let nodeIdx = 0
+      let targetIdx, sourceIdx
+      
+      // Get Target Idx
+      while (targetId !== state.nodes[nodeIdx].id && nodeIdx < state.nodes.length) {
+        nodeIdx += 1
+      }
+      targetIdx = state.nodes[nodeIdx].idx
+
+      // Get Source Idx
+      nodeIdx = 0
+      while (sourceId !== state.nodes[nodeIdx].id && nodeIdx < state.nodes.length) {
+        nodeIdx += 1
+      }
+      sourceIdx = state.nodes[nodeIdx].idx
+
+      // Push New Edge
+      state.edges.push({
+        targetIdx: targetIdx,
+        sourceIdx: sourceIdx,
+        ...action.payload
+      })
     }
   },
 })
