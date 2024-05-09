@@ -22,6 +22,7 @@ export const workflowRedux = createSlice({
           results: null, 
           source: [],
           target: [], 
+          inputFileName: null,
         },
       };
   
@@ -101,6 +102,25 @@ export const workflowRedux = createSlice({
         },
       }))
     },
+    updateNodeInputFileName: (state, action) => {
+      // Update Selected Node
+      state.selectedNode = {
+        ...state.selectedNode,
+        nodeData: {
+          ...state.selectedNode.nodeData,
+          inputFileName: action.payload,
+        },
+      }
+      
+      // Update All Nodes
+      state.nodes[state.selectedNode.idx] = state.nodes[state.selectedNode.idx] = JSON.parse(JSON.stringify({
+        ...state.selectedNode,
+        nodeData: {
+          ...state.selectedNode.nodeData,
+          inputFileName: action.payload,
+        },
+      }))
+    },
     setSelectedNode: (state, action) => {
       if(
         state.selectedNode === null || 
@@ -137,7 +157,7 @@ export const workflowRedux = createSlice({
       }
       sourceIdx = state.nodes[nodeIdx].idx
       sourceTitle = state.nodes[nodeIdx].title
-      
+
       // Push New Edge
       state.edges.push({
         targetIdx: targetIdx,
@@ -155,6 +175,7 @@ export const {
   createNewNode
   , updateNodeQuery
   , updateNodeQueryResults 
+  , updateNodeInputFileName
   , setSelectedNode
   , applyNodeChangesRdx
   , applyEdgeChangesRdx

@@ -7,7 +7,7 @@ import { DataInsertNode } from "@/components/workflow/sub-components/data-insert
 import { SqlNode } from "@/components/workflow/sub-components/sql-node";
 import initSqlJs from "sql.js";
 import { useDispatch, useSelector } from "react-redux";
-import { createNewNode, updateNodeQuery, updateNodeQueryResults, setSelectedNode } from "@/store/slices/workflowRedux";
+import { createNewNode, updateNodeQuery, updateNodeInputFileName, updateNodeQueryResults, setSelectedNode } from "@/store/slices/workflowRedux";
 
 export function WorkflowMain() {
   // Redux - Dispatch
@@ -58,6 +58,9 @@ export function WorkflowMain() {
     let currDilimiter = e.target[0].value;
     let currFile = e.target[2].files[0];
     let currTable = selectedNode.id;
+
+    // Update Node Info
+    dispatch(updateNodeInputFileName(currFile.name))
 
     // Parse Out FIles
     let fr = new FileReader();
@@ -122,8 +125,6 @@ export function WorkflowMain() {
             xl={selectedNode.barSizing.xl}
           >
             <Card
-              elevation={2}
-              variant="outlined"
               sx={{
                 height: "100%",
                 borderRadius: 0,
@@ -141,6 +142,7 @@ export function WorkflowMain() {
                     title={selectedNode.title}
                     data={selectedNode.nodeData.results}
                     error={error}
+                    inputFileName={selectedNode.nodeData.inputFileName}
                   />
                 </form>
               ) : null}

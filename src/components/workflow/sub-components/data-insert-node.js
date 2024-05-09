@@ -25,8 +25,8 @@ const VisuallyHiddenInput = styled("input")({
   width: 1,
 });
 
-function InputFileUpload({ setCurrFileType }) {
-  const [fileData, setFileData] = React.useState(null);
+function InputFileUpload({ setCurrFileType, inputFileName }) {
+  const [fileData, setFileData] = React.useState(inputFileName);
 
   return (
     <Button
@@ -67,8 +67,20 @@ function InputFileUpload({ setCurrFileType }) {
   );
 }
 
-export function DataInsertNode({ title, data, error }) {
+export function DataInsertNode({ title, data, error, inputFileName }) {
   const [currFileType, setCurrFileType] = React.useState("");
+
+  // Sync File Type
+  React.useEffect(()=>{
+    // Update File Type
+    if (/\.csv$/.test(inputFileName)) {
+      setCurrFileType(",");
+    } else if (/\.tsv$/.test(inputFileName)) {
+      setCurrFileType("\t");
+    } else if (/\.psv$/.test(inputFileName)) {
+      setCurrFileType("|");
+    }
+  },[inputFileName])
 
   return (
     <>
@@ -98,6 +110,7 @@ export function DataInsertNode({ title, data, error }) {
           setCurrFileType={(e) => {
             setCurrFileType(e);
           }}
+          inputFileName={inputFileName}
         />
         <Button type="submit" fullWidth>
           Load Data
