@@ -113,7 +113,7 @@ export const workflowRedux = createSlice({
       }
       
       // Update All Nodes
-      state.nodes[state.selectedNode.idx] = state.nodes[state.selectedNode.idx] = JSON.parse(JSON.stringify({
+      state.nodes[state.selectedNode.idx] = JSON.parse(JSON.stringify({
         ...state.selectedNode,
         nodeData: {
           ...state.selectedNode.nodeData,

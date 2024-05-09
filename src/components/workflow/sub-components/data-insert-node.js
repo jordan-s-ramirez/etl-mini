@@ -28,6 +28,8 @@ const VisuallyHiddenInput = styled("input")({
 function InputFileUpload({ setCurrFileType, inputFileName }) {
   const [fileData, setFileData] = React.useState(inputFileName);
 
+  React.useEffect(()=>{setFileData(inputFileName)},[inputFileName])
+
   return (
     <Button
       component="label"
@@ -79,6 +81,9 @@ export function DataInsertNode({ title, data, error, inputFileName }) {
       setCurrFileType("\t");
     } else if (/\.psv$/.test(inputFileName)) {
       setCurrFileType("|");
+    }
+    else {
+      setCurrFileType("")
     }
   },[inputFileName])
 
