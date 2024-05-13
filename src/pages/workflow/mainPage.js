@@ -1,4 +1,3 @@
-import Layout from "@/components/layout/layout";
 import Workflow from "@/components/workflow/workflow";
 import React from "react";
 import { Card, Grid } from "@mui/material";
