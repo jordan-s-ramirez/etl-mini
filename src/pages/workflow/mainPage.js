@@ -7,7 +7,7 @@ import { DataInsertNode } from "@/components/workflow/sub-components/data-insert
 import { SqlNode } from "@/components/workflow/sub-components/sql-node";
 import initSqlJs from "sql.js";
 import { useDispatch, useSelector } from "react-redux";
-import { createNewNode, updateNodeQuery, updateNodeInputFileName, updateNodeQueryResults, setSelectedNode } from "@/store/slices/workflowRedux";
+import { createNewNode, updateNodeQuery, updateNodeInputFileName, updateNodeQueryResults, setSelectedNode, deleteSelectedNode } from "@/store/slices/workflowRedux";
 
 export function WorkflowMain() {
   // Redux - Dispatch
@@ -109,6 +109,11 @@ export function WorkflowMain() {
         handleNodeCreation={(e) => {
           dispatch(createNewNode(e))
         }}
+        handleNodeDeletion={()=>{
+          dispatch(deleteSelectedNode())
+        }}
+
+        hasSelectedNode={selectedNode !== null}
       />
       <Grid
         container

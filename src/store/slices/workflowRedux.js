@@ -160,12 +160,25 @@ export const workflowRedux = createSlice({
 
       // Push New Edge
       state.edges.push({
+        key: crypto.randomUUID(),
         targetIdx: targetIdx,
         sourceIdx: sourceIdx,
         sourceTitle: sourceTitle,
-        targetTitle: sourceTitle,
+        targetTitle: targetTitle,
         ...action.payload
       })
+    },
+    deleteSelectedNode: (state) => {
+      // Update Node List
+      state.nodes.splice(state.selectedNode.idx, 1)
+
+      // Reapply Indexs
+      for(let idx in state.nodes) {
+        state.nodes[idx].idx = idx 
+      }
+
+      // Update Selected Node
+      state.selectedNode = null
     }
   },
 })
@@ -180,6 +193,7 @@ export const {
   , applyNodeChangesRdx
   , applyEdgeChangesRdx
   , addNewEdge
+  , deleteSelectedNode
 } = workflowRedux.actions
 
 export default workflowRedux.reducer

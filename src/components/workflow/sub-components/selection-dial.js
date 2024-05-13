@@ -6,6 +6,7 @@ import SpeedDialIcon from "@mui/material/SpeedDialIcon";
 import SpeedDialAction from "@mui/material/SpeedDialAction";
 import { LuFileInput } from "react-icons/lu";
 import { Box } from "@mui/material";
+import { FaRegTrashAlt } from "react-icons/fa";
 
 const StyledSpeedDial = styled(SpeedDial)(({ theme }) => ({
   position: "absolute",
@@ -22,9 +23,10 @@ const StyledSpeedDial = styled(SpeedDial)(({ theme }) => ({
 const actions = [
   { icon: <LuFileInput />, name: "Data Input Node", key: "dataInputNode" },
   { icon: <DiSqllite />, name: "SQL Node", key: "sqlNode" },
+  { icon: <FaRegTrashAlt/>, name: "Delete Node", key: "deleteNode"}
 ];
 
-export default function SelectionDial({ handleNodeCreation }) {
+export default function SelectionDial({ handleNodeCreation, handleNodeDeletion, hasSelectedNode }) {
   return (
     <Box sx={{ position: "relative" }}>
       <StyledSpeedDial
@@ -32,16 +34,35 @@ export default function SelectionDial({ handleNodeCreation }) {
         icon={<SpeedDialIcon />}
         direction={"right"}
       >
-        {actions.map((action) => (
-          <SpeedDialAction
-            key={action.key}
-            icon={action.icon}
-            tooltipTitle={action.name}
-            onClick={() => {
-              handleNodeCreation(action.key);
-            }}
-          />
-        ))}
+        {actions.map((action) => {
+          if(action.key !== "deleteNode") {
+            return (
+              <SpeedDialAction
+                key={action.key}
+                icon={action.icon}
+                tooltipTitle={action.name}
+                onClick={() => {
+                  handleNodeCreation(action.key);
+                }}
+              />
+            )
+          }
+          else if(hasSelectedNode) {
+            return(
+              <SpeedDialAction
+                sx={{backgroundColor:'rgba(255, 0, 43, 0.7)'}}
+                key={action.key}
+                icon={action.icon}
+                tooltipTitle={action.name}
+                onClick={() => {
+                  handleNodeDeletion();
+                }}
+              />
+            )
+          }
+          return null;
+        }
+        )}
       </StyledSpeedDial>
     </Box>
   );
