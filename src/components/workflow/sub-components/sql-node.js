@@ -10,6 +10,7 @@ export function SqlNode({
   sendQuery,
   currEdges,
   selectedNode,
+  handleTableTitleChange
 }) {
   // Table List
   const tableList = React.useMemo(() => {
@@ -45,11 +46,17 @@ export function SqlNode({
           {tableList.map((obj) => {
             return (
               <Input
+                value={obj.sourceDisplayTitle}
+                onChange={(e)=>{
+                  handleTableTitleChange({
+                    idx: obj.idx,
+                    title: e.target.value
+                  })
+                }}
                 key={obj.id}
                 fullWidth
                 placeholder={`Table Name - ${obj.sourceTitle}`}
                 required
-                value={obj.id}
               />
             );
           })}

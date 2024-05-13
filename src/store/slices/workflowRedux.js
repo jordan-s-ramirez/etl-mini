@@ -161,12 +161,19 @@ export const workflowRedux = createSlice({
       // Push New Edge
       state.edges.push({
         key: crypto.randomUUID(),
+        idx: state.edges.length,
         targetIdx: targetIdx,
         sourceIdx: sourceIdx,
         sourceTitle: sourceTitle,
+        sourceDisplayTitle: "",
         targetTitle: targetTitle,
         ...action.payload
       })
+    },
+    updateEdgeSourceDisplayTitle: (state, action) => {
+      // action.payload.idx   => edge idx
+      // action.payload.title => edge display title
+      state.edges[action.payload.idx].sourceDisplayTitle = action.payload.title
     },
     deleteSelectedNode: (state) => {
       // Update Node List
@@ -194,6 +201,7 @@ export const {
   , applyEdgeChangesRdx
   , addNewEdge
   , deleteSelectedNode
+  , updateEdgeSourceDisplayTitle
 } = workflowRedux.actions
 
 export default workflowRedux.reducer
