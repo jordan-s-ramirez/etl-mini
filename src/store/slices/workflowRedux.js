@@ -51,6 +51,7 @@ export const workflowRedux = createSlice({
           // label: "test",
           source: state.selectedNode.id,
           target: newNode.id,
+          idx: state.edges.length, 
           sourceHandle: null,
           targetHandle: null,
           type: "simplebezier",
@@ -194,11 +195,11 @@ export const workflowRedux = createSlice({
         // Update Index
         while(initalCount < state.nodes.length && (!hasTarget || !hasSource)) {
           if(state.edges[idx].target === state.nodes[initalCount].id) {
-            state.edges[idx].targetIdx = state.nodes[initalCount].idx
+            state.edges[idx].targetIdx = initalCount
             hasTarget = true
           }
           if(state.edges[idx].source === state.nodes[initalCount].id) {
-            state.edges[idx].sourceIdx = state.nodes[initalCount].idx
+            state.edges[idx].sourceIdx = initalCount
             hasSource = true
           }
           initalCount += 1
@@ -210,7 +211,12 @@ export const workflowRedux = createSlice({
         }
       }
 
+      // Delete Edges
       state.edges = state.edges.filter(e=>!e.toDelete)
+      // Reapply Edge Indexes
+      for(let idx in state.nodes) {
+        state.nodes[idx].idx = idx 
+      }
 
       // Update Selected Node
       state.selectedNode = null
