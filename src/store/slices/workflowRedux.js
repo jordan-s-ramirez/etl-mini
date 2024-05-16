@@ -167,6 +167,7 @@ export const workflowRedux = createSlice({
         sourceTitle: sourceTitle,
         sourceDisplayTitle: "",
         targetTitle: targetTitle,
+        toDelete: false,
         ...action.payload
       })
     },
@@ -183,6 +184,33 @@ export const workflowRedux = createSlice({
       for(let idx in state.nodes) {
         state.nodes[idx].idx = idx 
       }
+      
+      // Reapply Edges
+      let hasSource, hasTarget, initalCount
+      for(let idx in state.edges) {
+        hasSource = false
+        hasTarget = false
+        initalCount = 0
+        // Update Index
+        while(initalCount < state.nodes.length && (!hasTarget || !hasSource)) {
+          if(state.edges[idx].target === state.nodes[initalCount].id) {
+            state.edges[idx].targetIdx = state.nodes[initalCount].idx
+            hasTarget = true
+          }
+          if(state.edges[idx].source === state.nodes[initalCount].id) {
+            state.edges[idx].sourceIdx = state.nodes[initalCount].idx
+            hasSource = true
+          }
+          initalCount += 1
+        }
+
+        // Mark Edge for Deletion 
+        if(!hasSource || !hasTarget) {
+          state.edges[idx].toDelete = true
+        }
+      }
+
+      state.edges = state.edges.filter(e=>!e.toDelete)
 
       // Update Selected Node
       state.selectedNode = null
