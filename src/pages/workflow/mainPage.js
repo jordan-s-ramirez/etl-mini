@@ -7,6 +7,7 @@ import { SqlNode } from "@/components/workflow/sub-components/sql-node";
 import initSqlJs from "sql.js";
 import { useDispatch, useSelector } from "react-redux";
 import { createNewNode, updateNodeQuery, updateNodeInputFileName, updateNodeQueryResults, setSelectedNode, deleteSelectedNode, updateEdgeSourceDisplayTitle } from "@/store/slices/workflowRedux";
+import { configureCurrentQuery } from "@/util/workflow/workflowConfigureCurrentQuery.js"
 
 export function WorkflowMain() {
   // Redux - Dispatch
@@ -99,6 +100,9 @@ export function WorkflowMain() {
 
   // Handle SQL Node Query
   async function handleSQLNode(query) {
+    // Curate SQL Query
+    let baseQuery = configureCurrentQuery(nodes, edges, selectedNode.idx)
+    console.log("query", query)
     exec(query);
   }
 

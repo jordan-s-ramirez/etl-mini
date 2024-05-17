@@ -67,41 +67,16 @@ export const workflowRedux = createSlice({
     },
     updateNodeQuery: (state, action) => {
       // Update Selected Node
-      state.selectedNode = {
-        ...state.selectedNode,
-        nodeData: {
-          ...state.selectedNode.nodeData,
-          query: action.payload,
-        },
-      }
+      state.selectedNode.nodeData.query = action.payload
       
       // Update All Nodes
-      state.nodes[state.selectedNode.idx] = JSON.parse(JSON.stringify({
-        ...state.selectedNode,
-        nodeData: {
-          ...state.selectedNode.nodeData,
-          query: action.payload,
-        },
-      }))
+      state.nodes[state.selectedNode.idx].nodeData.query = action.payload
     },
     updateNodeQueryResults: (state, action) => {
-      // Update Selected Node
-      state.selectedNode = {
-        ...state.selectedNode,
-        nodeData: {
-          ...state.selectedNode.nodeData,
-          results: action.payload,
-        },
-      }
-      
+      // Update Selected Nodes
+      state.selectedNode.nodeData.results = action.payload
       // Update All Nodes
-      state.nodes[state.selectedNode.idx] = state.nodes[state.selectedNode.idx] = JSON.parse(JSON.stringify({
-        ...state.selectedNode,
-        nodeData: {
-          ...state.selectedNode.nodeData,
-          results: action.payload,
-        },
-      }))
+      state.nodes[state.selectedNode.idx].nodeData.results = action.payload     // state.nodes[state.selectedNode.idx] = state.nodes[state.selectedNode.idx] = JSON.parse(JSON.stringify({
     },
     updateNodeInputFileName: (state, action) => {
       // Update Selected Node
