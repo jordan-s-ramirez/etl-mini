@@ -48,7 +48,7 @@ export function WorkflowMain() {
       setError({ message: err.toString(), severity: "warning" });
     }
   }
-  
+
   // Handle File Data Load
   async function handleDataLoad(e) {
     // Handle Form
@@ -99,7 +99,7 @@ export function WorkflowMain() {
   }
 
   // Handle SQL Node Query
-  async function handleSQLNode(query) {
+  async function handleSQLNode(_) {
     // Curate SQL Query
     let baseQuery = configureCurrentQuery(nodes, edges, selectedNode.idx)
     console.log("query", baseQuery)
@@ -112,7 +112,7 @@ export function WorkflowMain() {
         handleNodeCreation={(e) => {
           dispatch(createNewNode(e))
         }}
-        handleNodeDeletion={()=>{
+        handleNodeDeletion={() => {
           dispatch(deleteSelectedNode())
         }}
 
@@ -170,7 +170,7 @@ export function WorkflowMain() {
                     sendQuery={(e) => {
                       handleSQLNode(e);
                     }}
-                    handleTableTitleChange={(e)=>{
+                    handleTableTitleChange={(e) => {
                       dispatch(updateEdgeSourceDisplayTitle(e))
                     }}
                   />
