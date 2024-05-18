@@ -1,7 +1,7 @@
 import { createSlice } from '@reduxjs/toolkit'
 import { workflowConfigInitalEdges } from '@/util/workflow/workflowConfigInitalEdges';
 import { workflowConfigInitalNodes } from '@/util/workflow/workflowConfigInitalNodes';
-import {applyNodeChanges, applyEdgeChanges} from "reactflow"; 
+import { applyNodeChanges, applyEdgeChanges } from "reactflow";
 export const workflowRedux = createSlice({
   name: 'workflowRedux',
   initialState: {
@@ -10,22 +10,22 @@ export const workflowRedux = createSlice({
     selectedNode: null,
   },
   reducers: {
-    createNewNode: (state,action) => {
+    createNewNode: (state, action) => {
       let nodeType = action.payload
 
       // New Node - General Config
       let newNode = {
         id: "t" + crypto.randomUUID().replaceAll("-", ""),
         nodeType: nodeType,
-        nodeData: { 
-          query: "", 
-          results: null, 
+        nodeData: {
+          query: "",
+          results: null,
           source: [],
-          target: [], 
+          target: [],
           inputFileName: null,
         },
       };
-  
+
       // Configure New Node
       if (nodeType === "dataInputNode") {
         newNode = {
@@ -43,15 +43,22 @@ export const workflowRedux = createSlice({
         };
       }
       state.nodes.push(newNode)
-      state.nodes = workflowConfigInitalNodes(state.nodes)
+
+      // Handle Node Placement
+      if (state.selectedNode !== null) {
+        state.nodes = workflowConfigInitalNodes(state.nodes, state.selectedNode.position)
+      }
+      else {
+        state.nodes = workflowConfigInitalNodes(state.nodes, { x: 0, y: 0 })
+      }
 
       // Add new edge to selected node
-      if(nodeType !== "dataInputNode" && state.selectedNode !== null) {
+      if (nodeType !== "dataInputNode" && state.selectedNode !== null) {
         state.edges.push({
           // label: "test",
           source: state.selectedNode.id,
           target: newNode.id,
-          idx: state.edges.length, 
+          idx: state.edges.length,
           sourceHandle: null,
           targetHandle: null,
           type: "simplebezier",
@@ -59,7 +66,7 @@ export const workflowRedux = createSlice({
           targetIdx: newNode.idx,
           sourceTitle: state.selectedNode.title,
           targetTitle: newNode.title
-        }) 
+        })
       }
 
       // Update Selected Node
@@ -68,7 +75,7 @@ export const workflowRedux = createSlice({
     updateNodeQuery: (state, action) => {
       // Update Selected Node
       state.selectedNode.nodeData.query = action.payload
-      
+
       // Update All Nodes
       state.nodes[state.selectedNode.idx].nodeData.query = action.payload
     },
@@ -87,7 +94,7 @@ export const workflowRedux = createSlice({
           inputFileName: action.payload,
         },
       }
-      
+
       // Update All Nodes
       state.nodes[state.selectedNode.idx] = JSON.parse(JSON.stringify({
         ...state.selectedNode,
@@ -98,11 +105,11 @@ export const workflowRedux = createSlice({
       }))
     },
     setSelectedNode: (state, action) => {
-      if(
-        state.selectedNode === null || 
+      if (
+        state.selectedNode === null ||
         action.payload === null ||
         (action.payload !== null &&
-        state.selectedNode.id !== action.payload.id)
+          state.selectedNode.id !== action.payload.id)
       ) {
         state.selectedNode = action.payload
       }
@@ -118,7 +125,7 @@ export const workflowRedux = createSlice({
       let sourceId = action.payload.source
       let nodeIdx = 0
       let targetIdx, sourceIdx, targetTitle, sourceTitle
-      
+
       // Get Target Idx
       while (targetId !== state.nodes[nodeIdx].id && nodeIdx < state.nodes.length) {
         nodeIdx += 1
@@ -157,23 +164,23 @@ export const workflowRedux = createSlice({
       state.nodes.splice(state.selectedNode.idx, 1)
 
       // Reapply Indexs
-      for(let idx in state.nodes) {
-        state.nodes[idx].idx = idx 
+      for (let idx in state.nodes) {
+        state.nodes[idx].idx = idx
       }
-      
+
       // Reapply Edges
       let hasSource, hasTarget, initalCount
-      for(let idx in state.edges) {
+      for (let idx in state.edges) {
         hasSource = false
         hasTarget = false
         initalCount = 0
         // Update Index
-        while(initalCount < state.nodes.length && (!hasTarget || !hasSource)) {
-          if(state.edges[idx].target === state.nodes[initalCount].id) {
+        while (initalCount < state.nodes.length && (!hasTarget || !hasSource)) {
+          if (state.edges[idx].target === state.nodes[initalCount].id) {
             state.edges[idx].targetIdx = initalCount
             hasTarget = true
           }
-          if(state.edges[idx].source === state.nodes[initalCount].id) {
+          if (state.edges[idx].source === state.nodes[initalCount].id) {
             state.edges[idx].sourceIdx = initalCount
             hasSource = true
           }
@@ -181,16 +188,16 @@ export const workflowRedux = createSlice({
         }
 
         // Mark Edge for Deletion 
-        if(!hasSource || !hasTarget) {
+        if (!hasSource || !hasTarget) {
           state.edges[idx].toDelete = true
         }
       }
 
       // Delete Edges
-      state.edges = state.edges.filter(e=>!e.toDelete)
+      state.edges = state.edges.filter(e => !e.toDelete)
       // Reapply Edge Indexes
-      for(let idx in state.nodes) {
-        state.nodes[idx].idx = idx 
+      for (let idx in state.nodes) {
+        state.nodes[idx].idx = idx
       }
 
       // Update Selected Node
@@ -200,10 +207,10 @@ export const workflowRedux = createSlice({
 })
 
 // Action creators are generated for each case reducer function
-export const { 
+export const {
   createNewNode
   , updateNodeQuery
-  , updateNodeQueryResults 
+  , updateNodeQueryResults
   , updateNodeInputFileName
   , setSelectedNode
   , applyNodeChangesRdx
