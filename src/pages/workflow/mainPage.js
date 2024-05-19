@@ -6,7 +6,7 @@ import { DataInsertNode } from "@/components/workflow/sub-components/data-insert
 import { SqlNode } from "@/components/workflow/sub-components/sql-node";
 import initSqlJs from "sql.js";
 import { useDispatch, useSelector } from "react-redux";
-import { createNewNode, updateNodeQuery, updateNodeInputFileName, updateNodeQueryResults, setSelectedNode, deleteSelectedNode, updateEdgeSourceDisplayTitle } from "@/store/slices/workflowRedux";
+import { createNewNode, updateNodeQuery, updateNodeInputFileName, updateNodeQueryResults, setSelectedNode, deleteSelectedNode, updateEdgeSourceDisplayTitle, updateNodeTitle } from "@/store/slices/workflowRedux";
 import { configureCurrentQuery } from "@/util/workflow/workflowConfigureCurrentQuery.js"
 
 export function WorkflowMain() {
@@ -151,6 +151,9 @@ export function WorkflowMain() {
                     data={selectedNode.nodeData.results}
                     error={error}
                     inputFileName={selectedNode.nodeData.inputFileName}
+                    handleTitleChange={(e) => {
+                      dispatch(updateNodeTitle(e))
+                    }}
                   />
                 </form>
               ) : null}
@@ -172,6 +175,9 @@ export function WorkflowMain() {
                     }}
                     handleTableTitleChange={(e) => {
                       dispatch(updateEdgeSourceDisplayTitle(e))
+                    }}
+                    handleTitleChange={(e) => {
+                      dispatch(updateNodeTitle(e))
                     }}
                   />
                 </>

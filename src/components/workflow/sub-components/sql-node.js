@@ -10,7 +10,8 @@ export function SqlNode({
   sendQuery,
   currEdges,
   selectedNode,
-  handleTableTitleChange
+  handleTableTitleChange,
+  handleTitleChange
 }) {
   // Table List
   const tableList = React.useMemo(() => {
@@ -24,7 +25,7 @@ export function SqlNode({
     // Update Local Query Tables
     // Apply Table Replacements
     let configuredQuery = selectedNode.nodeData.query
-    for(let idx in tableList) {
+    for (let idx in tableList) {
       configuredQuery = configuredQuery.replaceAll(e.target[idx].value, tableList[idx].source)
     }
 
@@ -41,13 +42,13 @@ export function SqlNode({
         spacing={1}
         sx={{ height: "100%", p: 1, minHeight: 200 }}
       >
-        <h3 style={{ margin: 0 }}>{selectedNode.title}</h3>
-        <form onSubmit={(e)=>{handleQueryRun(e)}}>
+        <input onChange={(e) => { handleTitleChange(e.target.value) }} style={{ border: 0, fontFamily: 'Roboto', fontSize: 20, fontWeight: 'bold' }} value={selectedNode.title} />
+        <form onSubmit={(e) => { handleQueryRun(e) }}>
           {tableList.map((obj) => {
             return (
               <Input
                 value={obj.sourceDisplayTitle}
-                onChange={(e)=>{
+                onChange={(e) => {
                   handleTableTitleChange({
                     idx: obj.idx,
                     title: e.target.value
@@ -61,6 +62,7 @@ export function SqlNode({
             );
           })}
           <Button
+            sx={{ marginTop: '1vh' }}
             startIcon={
               <Checkbox
                 size="small"

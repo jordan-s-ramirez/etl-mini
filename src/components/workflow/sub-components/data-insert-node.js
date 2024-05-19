@@ -28,7 +28,7 @@ const VisuallyHiddenInput = styled("input")({
 function InputFileUpload({ setCurrFileType, inputFileName }) {
   const [fileData, setFileData] = React.useState(inputFileName);
 
-  React.useEffect(()=>{setFileData(inputFileName)},[inputFileName])
+  React.useEffect(() => { setFileData(inputFileName) }, [inputFileName])
 
   return (
     <Button
@@ -69,11 +69,11 @@ function InputFileUpload({ setCurrFileType, inputFileName }) {
   );
 }
 
-export function DataInsertNode({ title, data, error, inputFileName }) {
+export function DataInsertNode({ title, data, error, inputFileName, handleTitleChange }) {
   const [currFileType, setCurrFileType] = React.useState("");
 
   // Sync File Type
-  React.useEffect(()=>{
+  React.useEffect(() => {
     // Update File Type
     if (/\.csv$/.test(inputFileName)) {
       setCurrFileType(",");
@@ -85,7 +85,7 @@ export function DataInsertNode({ title, data, error, inputFileName }) {
     else {
       setCurrFileType("")
     }
-  },[inputFileName])
+  }, [inputFileName])
 
   return (
     <>
@@ -95,7 +95,7 @@ export function DataInsertNode({ title, data, error, inputFileName }) {
         spacing={1}
         sx={{ height: "100%", p: 1, minHeight: 200 }}
       >
-        <h3 style={{ margin: 0 }}>{title}</h3>
+        <input onChange={(e) => { handleTitleChange(e.target.value) }} style={{ border: 0, fontFamily: 'Roboto', fontSize: 20, fontWeight: 'bold' }} value={title} />
         <FormControl>
           <InputLabel id="demo-simple-select-label">Delimiter</InputLabel>
           <Select
