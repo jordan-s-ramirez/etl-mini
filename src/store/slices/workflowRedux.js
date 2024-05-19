@@ -49,7 +49,7 @@ export const workflowRedux = createSlice({
         state.nodes = workflowConfigInitalNodes(state.nodes, state.selectedNode.position)
       }
       else {
-        state.nodes = workflowConfigInitalNodes(state.nodes, { x: 0, y: 0 })
+        state.nodes = workflowConfigInitalNodes(state.nodes, null)
       }
 
       // Add new edge to selected node

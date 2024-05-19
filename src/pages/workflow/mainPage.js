@@ -102,6 +102,7 @@ export function WorkflowMain() {
   async function handleSQLNode(_) {
     // Curate SQL Query
     let baseQuery = configureCurrentQuery(nodes, edges, selectedNode.idx)
+    console.log(baseQuery)
     exec(baseQuery);
   }
 
