@@ -55,8 +55,9 @@ export function WorkflowMain() {
     e.preventDefault();
 
     // SQL Table Paramerters
-    let currDilimiter = e.target[0].value;
-    let currFile = e.target[2].files[0];
+    console.log(e.target)
+    let currDilimiter = e.target[1].value;
+    let currFile = e.target[3].files[0];
     let currTable = selectedNode.id;
 
     // Update Node Info

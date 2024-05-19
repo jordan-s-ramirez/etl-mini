@@ -42,7 +42,11 @@ export function SqlNode({
         spacing={1}
         sx={{ height: "100%", p: 1, minHeight: 200 }}
       >
-        <input onChange={(e) => { handleTitleChange(e.target.value) }} style={{ border: 0, fontFamily: 'Roboto', fontSize: 20, fontWeight: 'bold' }} value={selectedNode.title} />
+        <input
+          onChange={(e) => { handleTitleChange(e.target.value) }}
+          style={{ border: 0, fontFamily: 'Roboto', fontSize: 20, fontWeight: 'bold' }}
+          value={selectedNode.title}
+        />
         <form onSubmit={(e) => { handleQueryRun(e) }}>
           {tableList.map((obj) => {
             return (
