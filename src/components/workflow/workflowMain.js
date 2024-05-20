@@ -1,7 +1,7 @@
 import Workflow from "@/components/workflow/workflow";
 import React from "react";
 import { Card, Grid } from "@mui/material";
-import SelectionDial from "@/components/workflow/sub-components/selection-dial";
+import { SelectionDial } from "@/components/workflow/sub-components/selection-dial";
 import { DataInsertNode } from "@/components/workflow/sub-components/data-insert-node";
 import { SqlNode } from "@/components/workflow/sub-components/sql-node";
 import initSqlJs from "sql.js";

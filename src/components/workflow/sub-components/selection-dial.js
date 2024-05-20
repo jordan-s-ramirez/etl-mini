@@ -27,7 +27,7 @@ const actions = [
   { icon: <FaRegTrashAlt />, name: "Delete Node", key: "deleteNode" }
 ];
 
-export default function SelectionDial({ handleNodeCreation, handleNodeDeletion, hasSelectedNode, handleDownloadResults }) {
+export function SelectionDial({ handleNodeCreation, handleNodeDeletion, hasSelectedNode, handleDownloadResults }) {
   return (
     <Box sx={{ position: "relative" }}>
       <StyledSpeedDial
