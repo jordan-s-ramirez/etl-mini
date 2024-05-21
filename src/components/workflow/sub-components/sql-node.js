@@ -18,22 +18,6 @@ export function SqlNode({
     return currEdges.filter((e) => e.target === selectedNode.id);
   }, [currEdges, selectedNode]);
 
-  // Handle Configure Query Run
-  async function handleQueryRun(e) {
-    await e.preventDefault()
-
-    // Update Local Query Tables
-    // Apply Table Replacements
-    let configuredQuery = selectedNode.nodeData.query
-    for (let idx in tableList) {
-      configuredQuery = configuredQuery.replaceAll(e.target[idx].value, tableList[idx].source)
-    }
-
-    // Send Query Command
-    sendQuery(configuredQuery);
-
-  }
-
   return (
     <>
       <Stack
@@ -47,7 +31,7 @@ export function SqlNode({
           style={{ border: 0, fontFamily: 'Roboto', fontSize: 20, fontWeight: 'bold' }}
           value={selectedNode.title}
         />
-        <form onSubmit={(e) => { handleQueryRun(e) }}>
+        <form onSubmit={(e) => { e.preventDefault(); sendQuery(null) }}>
           {tableList.map((obj) => {
             return (
               <Input
@@ -85,14 +69,13 @@ export function SqlNode({
         <TextField
           fullWidth
           value={selectedNode.nodeData.query}
-          onChange={(e) => {
+          onChange={async (e) => {
+            // Apply Table Names
+            await setCurrQuery(e.target.value);
             if (isQueryPersisting) {
               // Handle Query Persisting
-              sendQuery(e.target.value);
+              sendQuery(e.target.value)
             }
-
-            // Apply Table Names
-            setCurrQuery(e.target.value);
           }}
           placeholder='Enter some SQL. No inspiration ? Try "select sqlite_version()"'
           rows={11}
