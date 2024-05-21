@@ -1,7 +1,7 @@
 import Workflow from "@/components/workflow/workflow";
 import React from "react";
 import { Card, Grid } from "@mui/material";
-import SelectionDial from "@/components/workflow/sub-components/selection-dial";
+import { SelectionDial } from "@/components/workflow/sub-components/selection-dial";
 import { DataInsertNode } from "@/components/workflow/sub-components/data-insert-node";
 import { SqlNode } from "@/components/workflow/sub-components/sql-node";
 import initSqlJs from "sql.js";
@@ -99,6 +99,32 @@ export function WorkflowMain() {
     };
   }
 
+  // Handle Download Results
+  async function handleDownloadResult() {
+    // Write Data
+    let csvData = ""
+    if (selectedNode.hasOwnProperty('nodeData')) {
+      if (selectedNode.nodeData.hasOwnProperty('results')) {
+        // Write Results if we have
+        if (selectedNode.nodeData.results !== null) {
+          // write our file
+          console.log(selectedNode.nodeData.results)
+          csvData += selectedNode.nodeData.results[0].columns.join(',') + '\n'
+          for (let currValue of selectedNode.nodeData.results[0].values) {
+            csvData += currValue.join(',') + '\n'
+          }
+        }
+      }
+    }
+
+    const blob = new Blob([csvData], { type: "text/plain" });
+    const url = URL.createObjectURL(blob);
+    const link = document.createElement("a");
+    link.download = `${selectedNode.title.replaceAll(' ', '_')}.csv`
+    link.href = url;
+    link.click();
+  }
+
   // Handle SQL Node Query
   async function handleSQLNode(initalQuery) {
     // Curate SQL Query
@@ -116,7 +142,9 @@ export function WorkflowMain() {
         handleNodeDeletion={() => {
           dispatch(deleteSelectedNode())
         }}
-
+        handleDownloadResults={() => {
+          handleDownloadResult()
+        }}
         hasSelectedNode={selectedNode !== null}
       />
       <Grid

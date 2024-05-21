@@ -4,8 +4,11 @@ import { ThemeProvider } from "@mui/material/styles";
 import { theme } from "@/styles/mui_theme";
 import layoutStyle from "./layout.module.css";
 
+const debounceTime = 700
+
 export default function Layout({ children }) {
   const [drawerOpen, setDrawerOpen] = React.useState(true);
+  const [drawerChangeTime, setDrawerChangeTime] = React.useState(0)
   return (
     <>
       <ThemeProvider theme={theme}>
@@ -16,10 +19,16 @@ export default function Layout({ children }) {
               <div
                 className={layoutStyle.customLayoutSidebar}
                 onMouseEnter={() => {
-                  setDrawerOpen((e) => !e);
+                  if (Date.now() - drawerChangeTime > debounceTime) {
+                    setDrawerOpen((e) => !e);
+                    setDrawerChangeTime(Date.now())
+                  }
                 }}
                 onMouseLeave={() => {
-                  setDrawerOpen((e) => !e);
+                  if (Date.now() - drawerChangeTime > debounceTime) {
+                    setDrawerOpen((e) => !e);
+                    setDrawerChangeTime(Date.now())
+                  }
                 }}
               >
                 <Navbar drawerOpen={drawerOpen} theme={theme} />

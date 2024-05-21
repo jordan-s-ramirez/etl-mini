@@ -25,12 +25,12 @@ export var navbarConfig = {
       title: "Sql Editor",
       icon: <FaCode />,
     },
-    {
-      type: "MenuItem",
-      description: "Generic Help Page",
-      url: "/help",
-      title: "Help",
-      icon: <IoMdHelpCircleOutline />,
-    },
+    // {
+    //   type: "MenuItem",
+    //   description: "Generic Help Page",
+    //   url: "/help",
+    //   title: "Help",
+    //   icon: <IoMdHelpCircleOutline />,
+    // },
   ],
 };

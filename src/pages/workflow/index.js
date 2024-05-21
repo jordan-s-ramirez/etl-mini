@@ -1,11 +1,11 @@
 import Layout from "@/components/layout/layout";
 import StoreProvider from "@/store/storeProvider";
-import { WorkflowMain } from "./mainPage";
+import { WorkflowMain } from "@/components/workflow/workflowMain";
 
 const Page = () => {
   return (
     <StoreProvider>
-      <WorkflowMain/>
+      <WorkflowMain />
     </StoreProvider>
   );
 };

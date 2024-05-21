@@ -6,7 +6,7 @@ import SpeedDialIcon from "@mui/material/SpeedDialIcon";
 import SpeedDialAction from "@mui/material/SpeedDialAction";
 import { LuFileInput } from "react-icons/lu";
 import { Box } from "@mui/material";
-import { FaRegTrashAlt } from "react-icons/fa";
+import { FaRegTrashAlt, FaFileDownload } from "react-icons/fa";
 
 const StyledSpeedDial = styled(SpeedDial)(({ theme }) => ({
   position: "absolute",
@@ -23,10 +23,11 @@ const StyledSpeedDial = styled(SpeedDial)(({ theme }) => ({
 const actions = [
   { icon: <LuFileInput />, name: "Data Input Node", key: "dataInputNode" },
   { icon: <DiSqllite />, name: "SQL Node", key: "sqlNode" },
-  { icon: <FaRegTrashAlt/>, name: "Delete Node", key: "deleteNode"}
+  { icon: <FaFileDownload />, name: "Download Results", key: "downloadResults" },
+  { icon: <FaRegTrashAlt />, name: "Delete Node", key: "deleteNode" }
 ];
 
-export default function SelectionDial({ handleNodeCreation, handleNodeDeletion, hasSelectedNode }) {
+export function SelectionDial({ handleNodeCreation, handleNodeDeletion, hasSelectedNode, handleDownloadResults }) {
   return (
     <Box sx={{ position: "relative" }}>
       <StyledSpeedDial
@@ -35,7 +36,7 @@ export default function SelectionDial({ handleNodeCreation, handleNodeDeletion, 
         direction={"right"}
       >
         {actions.map((action) => {
-          if(action.key !== "deleteNode") {
+          if (action.key !== "deleteNode" && action.key !== "downloadResults") {
             return (
               <SpeedDialAction
                 key={action.key}
@@ -47,18 +48,33 @@ export default function SelectionDial({ handleNodeCreation, handleNodeDeletion, 
               />
             )
           }
-          else if(hasSelectedNode) {
-            return(
-              <SpeedDialAction
-                sx={{backgroundColor:'rgba(255, 0, 43, 0.7)'}}
-                key={action.key}
-                icon={action.icon}
-                tooltipTitle={action.name}
-                onClick={() => {
-                  handleNodeDeletion();
-                }}
-              />
-            )
+          else if (hasSelectedNode) {
+            if (action.key === "deleteNode") {
+              return (
+                <SpeedDialAction
+                  sx={{ backgroundColor: 'rgba(255, 0, 43, 0.7)' }}
+                  key={action.key}
+                  icon={action.icon}
+                  tooltipTitle={action.name}
+                  onClick={() => {
+                    handleNodeDeletion();
+                  }}
+                />
+              )
+            }
+            else if (action.key === "downloadResults") {
+              return (
+                <SpeedDialAction
+                  sx={{ backgroundColor: 'rgba(43, 255, 0, 0.7)' }}
+                  key={action.key}
+                  icon={action.icon}
+                  tooltipTitle={action.name}
+                  onClick={() => {
+                    handleDownloadResults()
+                  }}
+                />
+              )
+            }
           }
           return null;
         }
