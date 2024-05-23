@@ -28,8 +28,8 @@ const nodeDialSelections = [
   { icon: <FaRegTrashAlt />, name: "Delete Node", key: "deleteNode" }
 ];
 const importExportSelections = [
-  { icon: <LuFileInput />, name: "Import ETL File", key: "dataInputNode" },
-  { icon: <TbFileExport />, name: "Export ETL File", key: "sqlNode" },
+  { icon: <LuFileInput />, name: "Import ETL File", key: "import" },
+  { icon: <TbFileExport />, name: "Export ETL File", key: "export" },
 ];
 
 export function SelectionDial({
@@ -56,7 +56,7 @@ export function SelectionDial({
               tooltipTitle={action.name}
               onClick={() => {
                 // TODO: Handle Import and Export
-                handleImportExport()
+                handleImportExport(action.key)
               }}
             />
           )

@@ -6,7 +6,7 @@ export function workflowExportETLFile(nodes, edges) {
   }
 
   // TODO: Compress Data - Make file small
-
+  console.log("DOWNLOAD FILE")
 
   // TODO: Save File
   const text = "This is the content of the text file.";

@@ -148,6 +148,7 @@ export function WorkflowMain() {
         }}
         hasSelectedNode={selectedNode !== null}
         handleImportExport={(type) => {
+          console.log(type)
           if (type === 'import') {
 
           }
