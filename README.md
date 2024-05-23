@@ -1,7 +1,5 @@
 # Etl Mini
 
-[ETL Mini]
-
 ## Table of Contents
 - [Project Description](#project-description)
 - [Features](#features)
@@ -85,4 +83,4 @@ This project is licensed under the Non-Commercial License. See the [LICENSE](./L
 
 ---
 
-Thank you for using [ETL Mini]! We hope you find it useful and easy to use. If you have any suggestions or feedback, please let us know.
+Thank you for using ETL Mini! We hope you find it useful and easy to use. If you have any suggestions or feedback, please let us know.
