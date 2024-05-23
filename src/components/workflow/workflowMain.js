@@ -8,6 +8,7 @@ import initSqlJs from "sql.js";
 import { useDispatch, useSelector } from "react-redux";
 import { createNewNode, updateNodeQuery, updateNodeInputFileName, updateNodeQueryResults, setSelectedNode, deleteSelectedNode, updateEdgeSourceDisplayTitle, updateNodeTitle } from "@/store/slices/workflowRedux";
 import { configureCurrentQuery } from "@/util/workflow/workflowConfigureCurrentQuery.js"
+import { workflowExportETLFile } from "@/util/workflow/workflowExportETLFile";
 
 export function WorkflowMain() {
   // Redux - Dispatch
@@ -146,6 +147,14 @@ export function WorkflowMain() {
           handleDownloadResult()
         }}
         hasSelectedNode={selectedNode !== null}
+        handleImportExport={(type) => {
+          if (type === 'import') {
+
+          }
+          else if (type === 'export') {
+            workflowExportETLFile(nodes, edges)
+          }
+        }}
       />
       <Grid
         container
