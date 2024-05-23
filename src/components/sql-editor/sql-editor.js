@@ -45,7 +45,6 @@ export default function SqlJsPage() {
       setError(err);
     }
   };
-
   // Handle Data Load
   async function handleDataLoad(e) {
     // Handle Form
