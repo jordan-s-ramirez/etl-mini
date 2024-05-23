@@ -25,7 +25,7 @@ Text Delimited File Analysis
   - Data Validation: Ensure data integrity and consistency through rigorous validation checks during the file analysis process.
 
 ## Demo
-[Try here](https://vercel.com/jordansramirezs-projects/etl-mini)
+[Try here](https://etl-mini.vercel.app/)
 
 ## Tech Stack
 - **Frontend:** Next.js, React, Redux, ReactFlow
