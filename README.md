@@ -14,9 +14,6 @@ This project focuses on developing an ETL (Extract, Transform, Load) tool that a
 
 ## Features
 - ETL with SQLite
-- Data Visualization Aggregation
-- Text Delimited File Analysis
-- ETL with SQLite
   - Data Extraction: Efficiently extract data from multiple text-delimited files.
   - Data Transformation: Perform complex data transformations using SQLite, ensuring data is clean, normalized, and ready for analysis.
   - Data Loading: Load transformed data into SQLite databases, facilitating easy access and quick querying.
