@@ -1,5 +1,4 @@
 import { createSlice } from '@reduxjs/toolkit'
-import { workflowConfigInitalEdges } from '@/util/workflow/workflowConfigInitalEdges';
 import { workflowConfigInitalNodes } from '@/util/workflow/workflowConfigInitalNodes';
 import { applyNodeChanges, applyEdgeChanges } from "reactflow";
 export const workflowRedux = createSlice({
@@ -196,6 +195,10 @@ export const workflowRedux = createSlice({
       // Update Selected Node
       state.selectedNode = null
     },
+    handleETLFileImport: (state, action) => {
+      state.nodes = action.payload.nodes
+      state.edges = action.payload.edges
+    }
   },
 })
 
@@ -212,6 +215,7 @@ export const {
   , deleteSelectedNode
   , updateEdgeSourceDisplayTitle
   , updateNodeTitle
+  , handleETLFileImport
 } = workflowRedux.actions
 
 export default workflowRedux.reducer

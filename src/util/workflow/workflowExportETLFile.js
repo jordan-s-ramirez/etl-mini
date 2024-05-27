@@ -1,17 +1,23 @@
-// NOTE: To Implement
+import pako from 'pako';
+
 export function workflowExportETLFile(nodes, edges) {
-  // TODO: Remove Results - To save data
+  // Remove Results - To save data
+  let cleanNodes = JSON.parse(JSON.stringify(nodes))
   for (let idx in nodes) {
-    nodes[idx].nodeData.results = []
+    cleanNodes[idx].nodeData.results = []
   }
 
-  // TODO: Compress Data - Make file small
-  console.log("DOWNLOAD FILE")
+  // Compress Data - Make file small
+  let compressed = pako.gzip(JSON.stringify({
+    nodes: cleanNodes,
+    edges: edges
+  }), { to: 'string' });
+  compressed = btoa(String.fromCharCode.apply(null, compressed));
+  console.log(compressed)
 
-  // TODO: Save File
-  const text = "This is the content of the text file.";
+  // Save File
   const filename = "my_etl_pipeline.etlm";
-  const blob = new Blob([text], { type: 'text/plain' });
+  const blob = new Blob([compressed], { type: 'application/gzip' });
   const link = document.createElement('a');
   link.download = filename;
   link.href = window.URL.createObjectURL(blob);

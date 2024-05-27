@@ -9,6 +9,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { createNewNode, updateNodeQuery, updateNodeInputFileName, updateNodeQueryResults, setSelectedNode, deleteSelectedNode, updateEdgeSourceDisplayTitle, updateNodeTitle } from "@/store/slices/workflowRedux";
 import { configureCurrentQuery } from "@/util/workflow/workflowConfigureCurrentQuery.js"
 import { workflowExportETLFile } from "@/util/workflow/workflowExportETLFile";
+import { workflowImportETLFile } from "@/util/workflow/workflowImportETLFile";
 
 export function WorkflowMain() {
   // Redux - Dispatch
@@ -148,9 +149,8 @@ export function WorkflowMain() {
         }}
         hasSelectedNode={selectedNode !== null}
         handleImportExport={(type) => {
-          console.log(type)
           if (type === 'import') {
-
+            workflowImportETLFile(dispatch)
           }
           else if (type === 'export') {
             workflowExportETLFile(nodes, edges)
