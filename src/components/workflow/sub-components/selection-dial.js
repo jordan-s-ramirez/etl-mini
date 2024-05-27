@@ -7,6 +7,7 @@ import SpeedDialAction from "@mui/material/SpeedDialAction";
 import { LuFileInput } from "react-icons/lu";
 import { Box } from "@mui/material";
 import { FaRegTrashAlt, FaFileDownload } from "react-icons/fa";
+import { TbTableImport, TbFileExport } from "react-icons/tb";
 
 const StyledSpeedDial = styled(SpeedDial)(({ theme }) => ({
   position: "absolute",
@@ -20,22 +21,56 @@ const StyledSpeedDial = styled(SpeedDial)(({ theme }) => ({
   },
 }));
 
-const actions = [
-  { icon: <LuFileInput />, name: "Data Input Node", key: "dataInputNode" },
+const nodeDialSelections = [
+  { icon: <TbTableImport />, name: "Data Input Node", key: "dataInputNode" },
   { icon: <DiSqllite />, name: "SQL Node", key: "sqlNode" },
   { icon: <FaFileDownload />, name: "Download Results", key: "downloadResults" },
   { icon: <FaRegTrashAlt />, name: "Delete Node", key: "deleteNode" }
 ];
+const importExportSelections = [
+  { icon: <LuFileInput />, name: "Import ETL File", key: "import" },
+  { icon: <TbFileExport />, name: "Export ETL File", key: "export" },
+];
 
-export function SelectionDial({ handleNodeCreation, handleNodeDeletion, hasSelectedNode, handleDownloadResults }) {
+export function SelectionDial({
+  handleNodeCreation,
+  handleNodeDeletion,
+  hasSelectedNode,
+  handleDownloadResults,
+  handleImportExport }) {
+  const [isActive, setIsActive] = React.useState(false)
   return (
     <Box sx={{ position: "relative" }}>
+      {/* Import and Export Section of Dial */}
+      <StyledSpeedDial
+        ariaLabel="SpeedDial playground example"
+        icon={null}
+        direction={"down"}
+        open={isActive}
+      >
+        {importExportSelections.map((action) => {
+          return (
+            <SpeedDialAction
+              key={action.key}
+              icon={action.icon}
+              tooltipTitle={action.name}
+              onClick={() => {
+                handleImportExport(action.key)
+              }}
+            />
+          )
+        }
+        )}
+      </StyledSpeedDial>
+      {/* Node Selection Section of Dial */}
       <StyledSpeedDial
         ariaLabel="SpeedDial playground example"
         icon={<SpeedDialIcon />}
+        open={isActive}
         direction={"right"}
+        onClick={() => { setIsActive(e => !e) }}
       >
-        {actions.map((action) => {
+        {nodeDialSelections.map((action) => {
           if (action.key !== "deleteNode" && action.key !== "downloadResults") {
             return (
               <SpeedDialAction
