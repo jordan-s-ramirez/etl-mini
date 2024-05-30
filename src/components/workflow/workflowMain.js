@@ -81,17 +81,16 @@ export function WorkflowMain() {
       createQuery = createQuery.slice(0, createQuery.length - 1) + ");";
 
       // Configure Data
-      let dataInsertRow = `INSERT INTO ${currTable} VALUES (`;
-      let currRowData;
+      let dataInsertRow, currRowData;
       for (let i = 1; i < queryData.length; i++) {
         currRowData = queryData[i].split(currDilimiter);
         if (currRowData.length === columns.length) {
+          dataInsertRow = `INSERT INTO ${currTable} VALUES (`;
           for (let value of currRowData) {
             dataInsertRow += `'${value}',`;
           }
           createQuery +=
             dataInsertRow.slice(0, dataInsertRow.length - 1) + ");";
-          dataInsertRow = `INSERT INTO ${currTable} VALUES (`;
         }
       }
 
