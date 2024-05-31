@@ -10,7 +10,7 @@ import { createNewNode, updateNodeQuery, updateNodeInputFileName, updateNodeQuer
 import { configureCurrentQuery } from "@/util/workflow/workflowConfigureCurrentQuery.js"
 import { workflowExportETLFile } from "@/util/workflow/workflowExportETLFile";
 import { workflowImportETLFile } from "@/util/workflow/workflowImportETLFile";
-
+import { workflowCreateTableAndInsertQuery } from "@/util/workflow/workflowCreateTableAndInsertQuery";
 export function WorkflowMain() {
   // Redux - Dispatch
   const dispatch = useDispatch()
@@ -43,7 +43,9 @@ export function WorkflowMain() {
     }
     try {
       const results = db.exec(sql);
-      dispatch(updateNodeQueryResults(results))
+      if (selectedNode !== null) {
+        dispatch(updateNodeQueryResults(results))
+      }
       setError(null);
     } catch (err) {
       console.log("QUERY ERROR:\n", err);
@@ -134,6 +136,14 @@ export function WorkflowMain() {
     exec(baseQuery);
   }
 
+  // Load Database - From ETL File
+  async function handleLoadDatabase(columns, values, currTable) {
+    let query = workflowCreateTableAndInsertQuery(columns, values, currTable)
+    console.log(query)
+    exec(query)
+    exec(`select * from ${currTable}`);
+  }
+
   return (
     <>
       <SelectionDial
@@ -149,7 +159,7 @@ export function WorkflowMain() {
         hasSelectedNode={selectedNode !== null}
         handleImportExport={(type) => {
           if (type === 'import') {
-            workflowImportETLFile(dispatch)
+            workflowImportETLFile(dispatch, handleLoadDatabase)
           }
           else if (type === 'export') {
             workflowExportETLFile(nodes, edges)

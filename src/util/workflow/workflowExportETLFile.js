@@ -4,7 +4,9 @@ export function workflowExportETLFile(nodes, edges) {
   // Remove Results - To save data
   let cleanNodes = JSON.parse(JSON.stringify(nodes))
   for (let idx in nodes) {
-    cleanNodes[idx].nodeData.results = []
+    if (nodes[idx].nodeType !== "dataInputNode") {
+      cleanNodes[idx].nodeData.results = []
+    }
   }
 
   // Compress Data - Make file small

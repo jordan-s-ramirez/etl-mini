@@ -1,7 +1,7 @@
 import pako from 'pako';
 import { handleETLFileImport } from '@/store/slices/workflowRedux';
 
-export async function workflowImportETLFile(dispatch) {
+export async function workflowImportETLFile(dispatch, handleLoadDatabase) {
   // Step 1: Create the file input element
   let fileInput = document.createElement('input');
 
@@ -19,7 +19,7 @@ export async function workflowImportETLFile(dispatch) {
   document.body.appendChild(fileInput);
 
   // Optional: Add an event listener to handle file selection
-  fileInput.addEventListener('change', function(event) {
+  fileInput.addEventListener('change', function (event) {
     // Set Up File reader
     let fileReader = new FileReader()
     fileReader.onload = (e) => {
@@ -28,8 +28,16 @@ export async function workflowImportETLFile(dispatch) {
       decompressed = new Uint8Array(decompressed.split('').map(e => e.charCodeAt(0)));
       decompressed = pako.ungzip(decompressed, { to: 'string' });
       decompressed = JSON.parse(decompressed)
+
       // Update Redux States
       dispatch(handleETLFileImport(decompressed))
+
+      // Load Databasese
+      for (let node of decompressed.nodes) {
+        if (node.nodeType === "dataInputNode") {
+          handleLoadDatabase(node.nodeData.results[0].columns, node.nodeData.results[0].values, node.id)
+        }
+      }
     }
 
     // Read Files
