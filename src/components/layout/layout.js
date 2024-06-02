@@ -34,7 +34,6 @@ export default function Layout({ children }) {
                 <Navbar drawerOpen={drawerOpen} theme={theme} />
               </div>
             </aside>
-            {console.log()}
             <main className={layoutStyle.customLayoutMain} style={{ backgroundColor: theme.palette.custom.contentBackgroundColor }}>{children}</main>
           </div>
           {/* <div className={layoutStyle.customLayoutFooter}></div> */}
