@@ -6,13 +6,6 @@ export var navbarConfig = {
   config: [
     {
       type: "MenuItem",
-      description: "Github Documentation",
-      url: "https://github.com/jordan-s-ramirez/etl-mini",
-      title: "Documentation",
-      icon: <FaGithub />,
-    },
-    {
-      type: "MenuItem",
       description: "Workflow integration",
       url: "/workflow",
       title: "Workflow",
@@ -24,6 +17,13 @@ export var navbarConfig = {
       url: "/sql-editor",
       title: "Sql Editor",
       icon: <FaCode />,
+    },
+    {
+      type: "MenuItem",
+      description: "Github Documentation",
+      url: "https://github.com/jordan-s-ramirez/etl-mini",
+      title: "Documentation",
+      icon: <FaGithub />,
     },
     // {
     //   type: "MenuItem",

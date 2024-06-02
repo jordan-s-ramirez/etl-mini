@@ -1,12 +1,3 @@
-:root {
-    --header-bgc: #3c4858;
-    --sidebar-bgc: #3c4858;
-    --header-tc: #fc86aa;
-    --main-bgc: #f7f5f5;
-    --app-color: #000133;
-    --content-color: black;
-}
-
 body {
     margin: 0;
     padding: 0;

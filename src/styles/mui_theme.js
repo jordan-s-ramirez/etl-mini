@@ -2,16 +2,20 @@ import { createTheme } from "@mui/material/styles";
 
 const staticColors = {
   primaryMain: "#4caf50",
-  secondaryMain: "#edf2ff",
+  secondaryMain: "#212121",
   backgroundColorActive: "rgba(76,175,80, 0.5)",
   backgroundColorNotActive: undefined,
+  contentBackgroundColor: "#f7f5f5"
 };
 
 export const theme = createTheme({
   palette: {
     custom: {
+      primaryMain: staticColors.primaryMain,
+      secondaryMain: staticColors.secondaryMain,
       backgroundColorActive: staticColors.backgroundColorActive,
       backgroundColorNotActive: staticColors.backgroundColorNotActive,
+      contentBackgroundColor: staticColors.contentBackgroundColor
     },
     primary: {
       main: staticColors.primaryMain,
